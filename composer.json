@@ -1,0 +1,49 @@
+{
+  "name": "myword/jyqh",
+  "description": "",
+  "type": "project",
+  "license": "Apache-2.0",
+  "require": {
+    "php": ">=7.0.19",
+    "ext-gd": "*",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-exif": "*",
+    "ext-soap": "*",
+    "ext-iconv": "*",
+    "ext-bcmath": "*",
+    "ext-openssl": "*",
+    "ext-mbstring": "*",
+    "ext-simplexml": "*",
+    "topthink/framework": "5.0.*",
+    "topthink/think-installer": "^1.0",
+    "topthink/think-captcha": "^1.0",
+    "topthink/think-image": "^1.0",
+    "topthink/think-helper": "^1.0",
+    "topthink/think-queue": "^1.0",
+    "guzzlehttp/guzzle": "^6.0",
+    "zhuzhichao/ip-location-zh": "^2.4",
+    "hashids/hashids": "^2.0",
+    "jpush/jpush": "v3.5.*",
+    "phpoffice/phpspreadsheet": "^1.2",
+    "endroid/qr-code": "^2.5",
+    "picqer/php-barcode-generator": "^0.2.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\": "application"
+    }
+  },
+  "extra": {
+    "think-path": "thinkphp"
+  },
+  "config": {
+    "preferred-install": "dist"
+  },
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://packagist.laravel-china.org"
+    }
+  }
+}
