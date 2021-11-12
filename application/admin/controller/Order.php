@@ -717,7 +717,7 @@ class Order extends AdminController
                 if(!is_null($parent_info)){
                     //代理人以上，并且被推入与推荐人的上级是同级或以上才有奖励哦
                     $parent_group_id = MemberGroupRelationModel::get_group_id($parent_info['top_id']);
-                    if(!in_array($parent_group_id, [MemberGroupRelationModel::first, MemberGroupRelationModel::seven]) && $member_group_id >= $parent_group_id){
+                    if(!in_array($parent_group_id, [MemberGroupRelationModel::first, MemberGroupRelationModel::seven]) && $member_group_id >= $parent_group_id && $parent_info['top_id']>0){
                         $commission =  StrHelper::ceil_decimal($amount * MemberModel::LEVEL_RATE, 2);
                         Member::commission_inc($parent_info['top_id'], $commission);
                         MemberCommission::insert_log($parent_info['top_id'], MemberCommission::level, $commission, $commission, '来自'.$order['nick_name'].'的育成奖￥'.$commission, $order['order_id']);

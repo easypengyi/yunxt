@@ -1143,6 +1143,6 @@ class Member extends BaseModel
                 }
             }
         }
-        return [implode(',', $path), implode(',', $group), $top_info['all_path'].$top_id.',', $top_info['all_path_group'].$top_info['group_id'].',', ];
+        return [implode(',', $path), implode(',', $group), $top_info['all_path'].$top_id.',', $top_info['all_path_group'].',',$top_info['group_id'], ];
     }
 }
