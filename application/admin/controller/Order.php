@@ -44,6 +44,399 @@ class Order extends AdminController
      */
     public function index()
     {
+//        set_time_limit(0);
+        //设置全路径
+//        $data = MemberGroupRelationModel::all_list([],['group_id'=>7, 'top_id'=>array('gt', 0)])->toArray();
+//        foreach ($data as $val){
+//            $array = self::sort($val['member_id']);
+//            $list = array_slice($array,0,count($array)-1);
+//            $path = [];
+//            $group_ids = [];
+//            foreach ($list as $v){
+//                $path[] = $v['member_id'];
+//                $group_ids[] = $v['group_id'];
+//            }
+//            if(count($path)){
+//                MemberGroupRelationModel::where(['member_id'=>$val['member_id']])
+//                    ->update(['all_path'=>','.implode(',', $path).',', 'all_path_group'=>implode(',', $group_ids)]);
+//            }
+//        }
+//        var_dump($data);die;
+
+        //执行创始人
+//        $where = ['group_id'=>5];
+//        $list = MemberGroupRelationModel::all_list([], $where)->toArray();
+//        foreach ($list as $value){
+//            $path = array(0, 0, 0, 0, 0, 0);
+//            MemberGroupRelationModel::where(['member_id'=>$value['member_id']])->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $path)]);
+//        }
+
+        //执行直接是创始人推荐的
+//        $where = ['group_id'=>5];
+//        $list = MemberGroupRelationModel::all_list([], $where)->toArray();
+//        foreach ($list as $value){
+//            $list1 = MemberGroupRelationModel::all_list([], ['top_id'=>$value['member_id']])->toArray();
+//            foreach ($list1 as $val){
+//                if($val['group_id'] != 5){
+//                    $path = explode(',', $value['path']);
+//                    $path[0] = $value['member_id'];
+//                    $group= explode(',', $value['path_group']);
+//                    $group[0] = $value['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$val['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                }
+//            }
+//        }
+
+        //执行合伙人
+//        $where = ['group_id'=>4];
+//        $list = MemberGroupRelationModel::all_list([], $where)->toArray();
+//        foreach ($list as $value){
+//            $top = MemberGroupRelationModel::get_top($value['top_id'])->toArray();
+//            if($top['group_id'] == 5){
+//                $path = explode(',', $top['path']);
+//                $path[0] = $top['member_id'];
+//                $group= explode(',', $top['path_group']);
+//                $group[0] = $top['group_id'];
+//                MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                    ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//            }
+//            if($top['group_id'] == 4){
+//                if(!empty($top['path'])){
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>$top['path'], 'path_group'=>$top['path_group']]);
+//                }
+//            }
+//            if($top['group_id'] == 3){
+//                $top1 = MemberGroupRelationModel::get_top($top['top_id'])->toArray();
+//                if($top1['group_id'] == 5){
+//                    $path = explode(',', $top1['path']);
+//                    $path[0] = $top1['member_id'];
+//                    $group= explode(',', $top1['path_group']);
+//                    $group[0] = $top1['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                }else if($top1['group_id'] == 4){
+//                    if(!empty($top1['path'])){
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=>$top1['path'], 'path_group'=>$top1['path_group']]);
+//                    }
+//                }
+//            }
+//        }
+
+        //执行直接是合伙人推荐的
+//        $where = ['group_id'=>4];
+//            $list = MemberGroupRelationModel::all_list([], $where)->toArray();
+//            foreach ($list as $value){
+//                $list1 = MemberGroupRelationModel::all_list([], ['top_id'=>$value['member_id']])->toArray();
+//                foreach ($list1 as $val){
+//                    if($val['group_id'] != 4){
+//                        $path = explode(',', $value['path']);
+//                        $path[1] = $value['member_id'];
+//                        $group= explode(',', $value['path_group']);
+//                        $group[1] = $value['group_id'];
+//                        MemberGroupRelationModel::where(['member_id'=>$val['member_id']])
+//                            ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                    }
+//                }
+//        }
+
+        //董事
+//        $where = ['group_id'=>3, 'top_id'=>array('gt', 0)];
+//        $list = MemberGroupRelationModel::all_list([], $where)->toArray();
+//        foreach ($list as $value){
+//            $top = MemberGroupRelationModel::get_top($value['top_id']);
+//            if(is_null($top)){
+//                continue;
+//            }
+//
+//            if($top['group_id'] == 5){
+//                $path = explode(',', $top['path']);
+//                $path[0] = $top['member_id'];
+//                $group= explode(',', $top['path_group']);
+//                $group[0] = $top['group_id'];
+//                MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                    ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//            }
+//            if($top['group_id'] == 4){
+//                $path = explode(',', $top['path']);
+//                $path[1] = $top['member_id'];
+//                $group= explode(',', $top['path_group']);
+//                $group[1] = $top['group_id'];
+//                MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                    ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//            }
+//            if($top['group_id'] == 3){
+//                if(!empty($top['path'])){
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=> $top['path'], 'path_group'=> $top['path_group']]);
+//                    continue;
+//                }
+//                $top1 = MemberGroupRelationModel::get_top($top['top_id'])->toArray();
+//                if($top1['group_id'] == 5){
+//                    $path = explode(',', $top1['path']);
+//                    $path[0] = $top1['member_id'];
+//                    $group = explode(',', $top1['path_group']);
+//                    $group[0] = $top1['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                }else if($top1['group_id'] == 4){
+//                    $path = explode(',', $top1['path']);
+//                    $path[1] = $top1['member_id'];
+//                    $group = explode(',', $top1['path_group']);
+//                    $group[1] = $top1['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                }else if($top1['group_id'] == 3){
+//                    if(!empty($top1['path'])){
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=> $top1['path'], 'path_group'=> $top1['path_group']]);
+//                    }
+//                }
+//            }
+//            if($top['group_id'] == 2){
+//                $top1 = MemberGroupRelationModel::get_top($top['top_id'])->toArray();
+//                if($top1['group_id'] == 5){
+//                    $path = explode(',', $top1['path']);
+//                    $path[0] = $top1['member_id'];
+//                    $group = explode(',', $top1['path_group']);
+//                    $group[0] = $top1['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                }else if($top1['group_id'] == 4){
+//                    $path = explode(',', $top1['path']);
+//                    $path[1] = $top1['member_id'];
+//                    $group = explode(',', $top1['path_group']);
+//                    $group[1] = $top1['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                }else if($top1['group_id'] == 3){
+//                    if(!empty($top1['path'])){
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=> $top1['path'], 'path_group'=> $top1['path_group']]);
+//                    }
+//                }
+//            }
+//        }
+
+        //代理
+//        $where = ['group_id'=>2, 'top_id'=>array('gt', 1359)];
+//        $list = MemberGroupRelationModel::all_list([], $where)->toArray();
+//        foreach ($list as $value){
+//            $top = MemberGroupRelationModel::get_top($value['top_id']);
+//            if(!$top){
+//                continue;
+//            }
+//            if($top['group_id'] == 5){
+//                $path = explode(',', $top['path']);
+//                $path[0] = $top['member_id'];
+//                $group= explode(',', $top['path_group']);
+//                $group[0] = $top['group_id'];
+//                MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                    ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//            }
+//            if($top['group_id'] == 4){
+//                $path = explode(',', $top['path']);
+//                $path[1] = $top['member_id'];
+//                $group= explode(',', $top['path_group']);
+//                $group[1] = $top['group_id'];
+//                MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                    ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//            }
+//            if($top['group_id'] == 3){
+//                if(!empty($top['path'])){
+//                    $path = explode(',', $top['path']);
+//                    $path[2] = $top['member_id'];
+//                    $group = explode(',', $top['path_group']);
+//                    $group[2] = $top['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                    continue;
+//                }
+//                $top1 = MemberGroupRelationModel::get_top($top['top_id']);
+//                if($top1['group_id'] == 5){
+//                    $path = explode(',', $top1['path']);
+//                    $path[0] = $top1['member_id'];
+//                    $group = explode(',', $top1['path_group']);
+//                    $group[0] = $top1['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                }else if($top1['group_id'] == 4){
+//                    $path = explode(',', $top1['path']);
+//                    $path[1] = $top1['member_id'];
+//                    $group = explode(',', $top1['path_group']);
+//                    $group[1] = $top1['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                }else if($top1['group_id'] == 3){
+//                    $path = explode('|', $top1['path']);
+//                    $path[2] = $top['member_id'];
+//                    $group = explode(',', $top1['path_group']);
+//                    $group[2] = $top1['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                }else if($top1['group_id'] == 2){
+//                    if(!empty($top1['path'])){
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=> $top1['path'], 'path_group'=> $top1['path_group']]);
+//                    }
+//                }
+//            }
+//
+//            if($top['group_id'] == 2){
+//                $top1 = MemberGroupRelationModel::get_top($top['top_id'])->toArray();
+//                if($top1['group_id'] == 5){
+//                    $path = explode(',', $top1['path']);
+//                    $path[0] = $top1['member_id'];
+//                    $group = explode(',', $top1['path_group']);
+//                    $group[0] = $top1['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                }else if($top1['group_id'] == 4){
+//                    $path = explode(',', $top1['path']);
+//                    $path[1] = $top1['member_id'];
+//                    $group = explode(',', $top1['path_group']);
+//                    $group[1] = $top1['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                }else if($top1['group_id'] == 3){
+//                    $path = explode(',', $top1['path']);
+//                    $path[2] = $top['member_id'];
+//                    $group = explode(',', $top1['path_group']);
+//                    $group[2] = $top1['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                }else if($top1['group_id'] == 2){
+//                    if(!empty($top1['path'])){
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=> $top1['path'], 'path_group'=> $top1['path_group']]);
+//                    }
+//                }
+//            }
+//        }
+
+        //游客
+//        $where = ['group_id'=>7];
+//        $list = MemberGroupRelationModel::all_list([], $where)->toArray();
+//        foreach ($list as $value){
+//            if($value['top_id'] > 0){
+//                $top = MemberGroupRelationModel::get_top($value['top_id'])->toArray();
+//                if($top['group_id'] == 5){
+//                    $path = explode(',', $top['path']);
+//                    $path[0] = $top['member_id'];
+//                    $group= explode(',', $top['path_group']);
+//                    $group[0] = $top['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                }
+//                if($top['group_id'] == 4){
+//                    $path = explode(',', $top['path']);
+//                    $path[1] = $top['member_id'];
+//                    $group= explode(',', $top['path_group']);
+//                    $group[1] = $top['group_id'];
+//                    MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                        ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                }
+//                if($top['group_id'] == 3){
+//                    if(!empty($top['path'])){
+//                        $path = explode(',', $top['path']);
+//                        $path[2] = $top['member_id'];
+//                        $group = explode(',', $top['path_group']);
+//                        $group[2] = $top['group_id'];
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                        continue;
+//                    }
+//                    $top1 = MemberGroupRelationModel::get_top($top['top_id'])->toArray();
+//                    if($top1['group_id'] == 5){
+//                        $path = explode(',', $top1['path']);
+//                        $path[0] = $top1['member_id'];
+//                        $group = explode(',', $top1['path_group']);
+//                        $group[0] = $top1['group_id'];
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                    }else if($top1['group_id'] == 4){
+//                        $path = explode(',', $top1['path']);
+//                        $path[1] = $top1['member_id'];
+//                        $group = explode(',', $top1['path_group']);
+//                        $group[1] = $top1['group_id'];
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                    }else if($top1['group_id'] == 3){
+//                        $path = explode(',', $top1['path']);
+//                        $path[2] = $top['member_id'];
+//                        $group = explode(',', $top1['path_group']);
+//                        $group[2] = $top1['group_id'];
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                    }else if($top1['group_id'] == 2){
+//                        $path = explode(',', $top1['path']);
+//                        $path[3] = $top['member_id'];
+//                        $group = explode(',', $top1['path_group']);
+//                        $group[3] = $top1['group_id'];
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                    }else if($top1['group_id'] == 7){
+//                        if(!empty($top1['path'])){
+//                            MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                                ->update(['path'=> $top1['path'], 'path_group'=> $top1['path_group']]);
+//                        }
+//                    }
+//                }
+//
+//                if($top['group_id'] == 2){
+//                    if(!empty($top['path'])){
+//                        $path = explode(',', $top['path']);
+//                        $path[3] = $top['member_id'];
+//                        $group = explode(',', $top['path_group']);
+//                        $group[3] = $top['group_id'];
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                        continue;
+//                    }
+//                    $top1 = MemberGroupRelationModel::get_top($top['top_id'])->toArray();
+//                    if($top1['group_id'] == 5){
+//                        $path = explode(',', $top1['path']);
+//                        $path[0] = $top1['member_id'];
+//                        $group = explode(',', $top1['path_group']);
+//                        $group[0] = $top1['group_id'];
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                    }else if($top1['group_id'] == 4){
+//                        $path = explode(',', $top1['path']);
+//                        $path[1] = $top1['member_id'];
+//                        $group = explode(',', $top1['path_group']);
+//                        $group[1] = $top1['group_id'];
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                    }else if($top1['group_id'] == 3){
+//                        $path = explode(',', $top1['path']);
+//                        $path[2] = $top['member_id'];
+//                        $group = explode(',', $top1['path_group']);
+//                        $group[2] = $top1['group_id'];
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                    }else if($top1['group_id'] == 2){
+//                        $path = explode(',', $top1['path']);
+//                        $path[3] = $top['member_id'];
+//                        $group = explode(',', $top1['path_group']);
+//                        $group[3] = $top1['group_id'];
+//                        MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                            ->update(['path'=>implode(',', $path), 'path_group'=>implode(',', $group)]);
+//                    }else if($top1['group_id'] == 7){
+//                        if(!empty($top1['path'])){
+//                            MemberGroupRelationModel::where(['member_id'=>$value['member_id']])
+//                                ->update(['path'=> $top1['path'], 'path_group'=> $top1['path_group']]);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//        var_dump($list);die;
+
         $where = $this->search('order_sn', '输入需查询的订单号');
 
         $this->search['date']   = input('date', '');
@@ -126,7 +519,7 @@ class Order extends AdminController
         try {
             Db::startTrans();
             $data_info->save($data);
-            self::add($data_info,$data_info['product_id'],$data_info['product_num']);
+            $res = self::add($data_info, $data_info['product_id'], $data_info['product_num']);
             Db::commit();
         } catch (Exception $e) {
             Db::rollback();
@@ -135,7 +528,7 @@ class Order extends AdminController
 
         try {
             Db::startTrans();
-            self::reward($id);
+            self::newReward($id, $res);
             Db::commit();
         } catch (Exception $e) {
             Db::rollback();
@@ -157,9 +550,10 @@ class Order extends AdminController
             $data  = $this->edit_data($data_info);
             $group_id = $this->edit_group_data($product_id);
             $member = MemberModel::create($data);
-            $this->edit_group($member['member_id'],$data_info, $group_id);
-            MemberModel::balance_inc($member->getAttr('member_id'),$product_num);
+            $res = $this->edit_group($member['member_id'], $data_info, $group_id);
+            MemberModel::balance_inc($member->getAttr('member_id'), $product_num);
             $this->cache_clear();
+            return $res;
         }
     }
 
@@ -236,10 +630,16 @@ class Order extends AdminController
         }else{
             $top_id = $data_info->getAttr('top_id');
         }
-        MemberGroupRelationModel::where(['member_id'=>$member_id])->setField('top_id',$top_id);
-        return true;
-    }
 
+        list($path, $group, $all_path, $all_path_group) = MemberModel::getMemberPath($top_id, $group_id[0]);
+
+        MemberGroupRelationModel::where(['member_id'=>$member_id])
+            ->update(['top_id'=>$top_id, 'path'=>$path, 'path_group'=>$group, 'all_path'=>$all_path, 'all_path_group'=>$all_path_group]);
+
+        $true_top_id = $data_info->getAttr('top_id');
+        list($path, $group, $all_path, $all_path_group) = MemberModel::getMemberPath($true_top_id, $group_id[0]);
+        return [$path, $group];
+    }
 
 
     /**
@@ -248,6 +648,174 @@ class Order extends AdminController
      */
     private function cache_clear()
     {
+    }
+
+    /**
+     * 3.0奖金逻辑
+     * @param $id
+     * @return bool
+     * @throws \think\Exception
+     * @throws \think\exception\DbException
+     */
+    public static  function newReward($id, $member_group){
+
+        $order = OrderShopModel::get($id);
+        $money = $order['product_num']*ProductModel::PRODUCT_PRICE;//成本价
+        $top_group_id = MemberGroupRelationModel::get_group_id($order['top_id']);
+        //$two_group_id = MemberGroupRelationModel::get_group_id($order['two_id']);
+
+        list($member_group_id, $member_price) = MemberModel::getMemberPrice($order['product_name']);
+
+        switch ($top_group_id){
+            case MemberGroupRelation::first:
+                $current_price = MemberModel::FIRST_PRICE;
+                $member_rate = MemberModel::FIRST_RATE;
+                break;
+            case MemberGroupRelation::second:
+                $current_price = MemberModel::SECOND_PRICE;
+                $member_rate = MemberModel::SECOND_RATE;
+                break;
+            case MemberGroupRelation::three:
+                $current_price = MemberModel::THREE_PRICE;
+                $member_rate = MemberModel::THREE_RATE;
+                break;
+            case MemberGroupRelation::four:
+                $current_price = MemberModel::FOUR_PRICE;
+                $member_rate = MemberModel::FOUR_RATE;
+                break;
+            default:
+                $current_price = MemberModel::FOUR_PRICE;
+                $member_rate = MemberModel::FOUR_RATE;
+                break;
+        }
+
+        if ($current_price == 0){
+            return false;
+        }
+
+        if ($order['is_admin'] == 1){//云库存结算
+//                $commission =  StrHelper::ceil_decimal($money, 2);
+//                Member::commission_inc($order['top_id'], $commission);
+//                MemberCommission::insert_log($order['top_id'], MemberCommission::maker3, $commission, $commission, '来自'.$order['nick_name'].'的分销奖￥'.$commission,0);
+//
+//                $commission = ($member_price - $current_price)*$order['product_num'];
+//                Member::commission_inc($order['top_id'], $commission);
+//                MemberCommission::insert_log($order['top_id'], MemberCommission::maker4, $commission, $commission, '来自'.$order['nick_name'].'的批发奖￥'.$commission,0);
+
+        }else{
+            //平台结算
+            self::commonAward($order, $money); //全国加权分红和运营中心奖励
+            //推荐同级或者上级
+            if($member_group_id >= $top_group_id){
+                //推荐奖励
+                $amount = $order['product_num'] * $member_price;
+                $commission =  StrHelper::ceil_decimal($amount * $member_rate, 2);
+                Member::commission_inc($order['top_id'], $commission);
+                MemberCommission::insert_log($order['top_id'], MemberCommission::recommend, $commission, $commission, '来自'.$order['nick_name'].'的推荐奖￥'.$commission, $order['order_id']);
+                //育成奖
+                $parent_info = MemberGroupRelationModel::get_top($order['top_id']);
+                if(!is_null($parent_info)){
+                    //代理人以上，并且被推入与推荐人的上级是同级或以上才有奖励哦
+                    $parent_group_id = MemberGroupRelationModel::get_group_id($parent_info['top_id']);
+                    if(!in_array($parent_group_id, [MemberGroupRelationModel::first, MemberGroupRelationModel::seven]) && $member_group_id >= $parent_group_id){
+                        $commission =  StrHelper::ceil_decimal($amount * MemberModel::LEVEL_RATE, 2);
+                        Member::commission_inc($parent_info['top_id'], $commission);
+                        MemberCommission::insert_log($parent_info['top_id'], MemberCommission::level, $commission, $commission, '来自'.$order['nick_name'].'的育成奖￥'.$commission, $order['order_id']);
+                    }
+                }
+            }
+//            else{
+//
+//                // 推荐下级得批发奖
+//                $commission = ($member_price - $current_price) * $order['product_num'];
+//                Member::commission_inc($order['top_id'], $commission);
+//                MemberCommission::insert_log($order['top_id'], MemberCommission::maker4, $commission, $commission, '来自'.$order['nick_name'].'的批发奖￥'.$commission, $order['order_id']);
+//            }
+
+            //极差分红 当前报单人员的
+            $member_path = $member_group[0];
+            if(!empty($member_path)){
+                $path = explode(',', $member_group[0]);
+                $group = explode(',', $member_group[1]);
+                $unit_price = $member_price;
+                //有董事哦
+                if($path[2] > 0 && $group[2] == MemberGroupRelation::three){
+                    $commission =  ($unit_price - MemberModel::THREE_PRICE) * $order['product_num'];
+                    Member::commission_inc($path[2], $commission);
+                    MemberCommission::insert_log($path[2], MemberCommission::maker4, $commission, $commission, '来自'.$order['nick_name'].'的批发奖￥'.$commission, $order['order_id']);
+                    $unit_price = MemberModel::THREE_PRICE;
+                }
+                //有合伙人哦
+                if($path[1] > 0 && $group[1] == MemberGroupRelation::second){
+                    $commission =  ($unit_price - MemberModel::SECOND_PRICE) * $order['product_num'];
+                    Member::commission_inc($path[1], $commission);
+                    MemberCommission::insert_log($path[1], MemberCommission::maker4, $commission, $commission, '来自'.$order['nick_name'].'的批发奖￥'.$commission, $order['order_id']);
+                    $unit_price = MemberModel::SECOND_PRICE;
+                }
+                //有创始人哦
+                if($path[0] > 0 && $group[0] == MemberGroupRelation::first){
+                    $commission =  ($unit_price - MemberModel::FIRST_PRICE) * $order['product_num'];
+                    Member::commission_inc($path[0], $commission);
+                    MemberCommission::insert_log($path[0], MemberCommission::maker4, $commission, $commission, '来自'.$order['nick_name'].'的批发奖￥'.$commission, $order['order_id']);
+                    //$unit_price = MemberModel::SECOND_PRICE;
+                }
+            }
+        }
+    }
+
+    /**
+     * 全国加权分红和运营中心奖励
+     *
+     * @param $order
+     * @param $money
+     * @throws \think\Exception
+     */
+    public static function commonAward($order, $money){
+        $center_commission = $order['product_num'] * 20;
+        $reward1 = StrHelper::ceil_decimal($money, 2)*0.03;//联合创始人奖金池
+        $reward2 = StrHelper::ceil_decimal($money, 2)*0.02;//全球合伙人奖金池
+        $reward3 = StrHelper::ceil_decimal($money, 2)*0.01;//执行董事奖金池
+        $data_log = [];
+        $is_center = MemberModel::find_member_uid($order['member_id'])['is_center'];
+
+        if ($is_center == true){
+            Member::commission_inc($order['member_id'], $center_commission);
+            $data_log[0]['member_id']   = $order['member_id'];
+            $data_log[0]['type']        = MemberCommission::maker8;
+            $data_log[0]['amount']      = 0;
+            $data_log[0]['value']       = $center_commission;
+            $data_log[0]['description'] = '来自'.$order['nick_name'].'的报单中心奖';
+            $data_log[0]['relation_id'] = $order['order_id'];
+            $data_log[0]['create_time'] = time();
+        }
+        Reword::commission_inc('first_commission', $reward1);
+        $data_log[1]['member_id']   = 0;
+        $data_log[1]['type']        = MemberCommission::first;
+        $data_log[1]['amount']      = 0;
+        $data_log[1]['value']       = $reward1;
+        $data_log[1]['description'] = '来自'.$order['nick_name'].'的业绩分红';
+        $data_log[1]['relation_id'] = $order['order_id'];
+        $data_log[1]['create_time'] = time();
+
+        Reword::commission_inc('second_commission', $reward2);
+        $data_log[2]['member_id']   = 0;
+        $data_log[2]['type']        = MemberCommission::second;
+        $data_log[2]['amount']      = 0;
+        $data_log[2]['value']       = $reward2;
+        $data_log[2]['description'] = '来自'.$order['nick_name'].'的业绩分红';
+        $data_log[2]['relation_id'] = $order['order_id'];
+        $data_log[2]['create_time'] = time();
+
+        Reword::commission_inc('three_commission', $reward3);
+        $data_log[3]['member_id']   = 0;
+        $data_log[3]['type']        = MemberCommission::three;
+        $data_log[3]['amount']      = 0;
+        $data_log[3]['value']       = $reward3;
+        $data_log[3]['description'] = '来自'.$order['nick_name'].'的业绩分红';
+        $data_log[3]['relation_id'] = $order['order_id'];
+        $data_log[3]['create_time'] = time();
+
+        MemberCommission::insert_log_all($data_log);
     }
 
     /**
@@ -315,13 +883,13 @@ class Order extends AdminController
 
         if ($order['is_admin'] == 1){//云库存结算
 
-                $commission =  StrHelper::ceil_decimal($money, 2);
-                Member::commission_inc($order['top_id'], $commission);
-                MemberCommission::insert_log($order['top_id'], MemberCommission::maker3, $commission, $commission, '来自'.$order['nick_name'].'的分销奖￥'.$commission,0);
+            $commission =  StrHelper::ceil_decimal($money, 2);
+            Member::commission_inc($order['top_id'], $commission);
+            MemberCommission::insert_log($order['top_id'], MemberCommission::maker3, $commission, $commission, '来自'.$order['nick_name'].'的分销奖￥'.$commission,0);
 
-                $commission = ($member_price - $current_price)*$order['product_num'];
-                Member::commission_inc($order['top_id'], $commission);
-                MemberCommission::insert_log($order['top_id'], MemberCommission::maker4, $commission, $commission, '来自'.$order['nick_name'].'的批发奖￥'.$commission,0);
+            $commission = ($member_price - $current_price)*$order['product_num'];
+            Member::commission_inc($order['top_id'], $commission);
+            MemberCommission::insert_log($order['top_id'], MemberCommission::maker4, $commission, $commission, '来自'.$order['nick_name'].'的批发奖￥'.$commission,0);
 
         }else{//平台结算
 
@@ -383,12 +951,12 @@ class Order extends AdminController
             }
 
             if ($order['two_id']){//有接点人
-                    $commission = StrHelper::ceil_decimal($money, 2)*0.2;//市场开发奖
-                    Member::commission_inc($order['top_id'], $commission);
-                    MemberCommission::insert_log($order['top_id'], MemberCommission::maker14, $commission, $commission, '来自'.$order['nick_name'].'的开发奖',0);
+                $commission = StrHelper::ceil_decimal($money, 2)*0.2;//市场开发奖
+                Member::commission_inc($order['top_id'], $commission);
+                MemberCommission::insert_log($order['top_id'], MemberCommission::maker14, $commission, $commission, '来自'.$order['nick_name'].'的开发奖',0);
 
 
-               //推荐人等级大于用户等级拥有批发奖管理奖
+                //推荐人等级大于用户等级拥有批发奖管理奖
 
                 $array = self::sort($order['two_id']);
                 if ($array){
@@ -561,8 +1129,8 @@ class Order extends AdminController
     }
     public static function sort($top_id)
     {
-        $where['group_id'] = ['neq',MemberGroupRelationModel::seven];
-        $data = $a = MemberGroupRelationModel::all_list([],$where);
+        //$where['group_id'] = ['neq',MemberGroupRelationModel::seven];
+        $data = $a = MemberGroupRelationModel::all_list([],[]);
         $arr = self::sort1($top_id,$data);
         return $arr;
     }

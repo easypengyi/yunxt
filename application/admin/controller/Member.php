@@ -165,7 +165,7 @@ class Member extends AdminController
                 $this->edit_group($data_info, $group_id,$top_id);
                 Db::commit();
                 $member_id = $data_info->getAttr('member_id');
-                
+
                 //报单城市 by shiqiren
                 Db::name('member_own_areas')->where('member_id',$member_id)->delete();
                 $datas = [];
@@ -174,7 +174,7 @@ class Member extends AdminController
                     $datas[]=['member_id'=>$member_id,'province'=>$value[0],'city'=>$value[1],'area'=>$value[2],'search_key'=>$key,'create_time'=>$now,'update_time'=>$now];
                 }
                 count($datas)>0 AND Db::name('member_own_areas')->insertAll($datas);
-            
+
             } catch (Exception $e) {
                 Db::rollback();
                 $this->error('信息新增失败！');
@@ -214,7 +214,7 @@ class Member extends AdminController
                 Db::commit();
 
                 $member_id = $data_info->getAttr('member_id');
-                
+
                 //报单城市 by shiqiren
                 Db::name('member_own_areas')->where('member_id',$member_id)->delete();
                 $datas = [];
@@ -484,7 +484,7 @@ class Member extends AdminController
                     $row = Db::name('member_own_areas')->where('search_key', $key)-> find();
                     $row AND $this->error('报单城市“'.$key.'”已经存在！');
                 }
-                
+
             }
             $data['areas'] = $select_areas;
         }
@@ -556,7 +556,12 @@ class Member extends AdminController
     private function edit_group($data_info, $group_id,$top_id)
     {
         MemberGroupRelationModel::bind_group($group_id, $data_info->getAttr('member_id'));
-        MemberGroupRelationModel::where(['member_id'=>$data_info->getAttr('member_id')])->setField('top_id',$top_id);
+
+        list($path, $group, $all_path, $all_path_group) = \app\common\model\Member::getMemberPath($top_id, $group_id[0]);
+        MemberGroupRelationModel::where(['member_id'=>$data_info->getAttr('member_id')])
+            ->update(['top_id'=>$top_id, 'path'=>$path, 'path_group'=>$group, 'all_path'=>$all_path, 'all_path_group'=>$all_path_group]);
+
+//        MemberGroupRelationModel::where(['member_id'=>$data_info->getAttr('member_id')])->setField('top_id',$top_id);
         return true;
     }
 

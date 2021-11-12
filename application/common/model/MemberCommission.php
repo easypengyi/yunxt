@@ -38,7 +38,8 @@ class MemberCommission extends BaseModel
     const maker8 = 8;
 
     //活动推荐奖
-    const recommend = 10;
+    const recommend = 10; //推荐奖
+    const level = 20;  //育成奖
 
 
     //开发奖 平级推或者下推上

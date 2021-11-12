@@ -21,6 +21,23 @@ use think\Db;
  */
 class Member extends BaseModel
 {
+
+    const FIRST_PRICE = 980;  //联合创始人
+    const SECOND_PRICE = 1130; //全球合伙人
+    const THREE_PRICE = 1330;  //执行董事
+    const FOUR_PRICE = 1580;  //代理人
+    const SEVEN_PRICE = 1800;  //体验官
+    const FIVE_PRICE = 2388;  //游客
+
+    const FIRST_RATE = 0.20;   //推荐奖励
+    const SECOND_RATE = 0.17;   //推荐奖励
+    const THREE_RATE = 0.14;   //推荐奖励
+    const FOUR_RATE = 0.11;   //推荐奖励
+    const SEVEN_RATE = 0.08;  //推荐奖励
+    const FIVE_RATE = 0.05;  //推荐奖励
+
+    const LEVEL_RATE = 0.03; //育成奖3%
+
     protected $type = [
         'enable'     => 'boolean',
         'del'        => 'boolean',
@@ -73,7 +90,15 @@ class Member extends BaseModel
         } else {
             $invitation_id = MemberModel::find_invitation_id($invitation_id);
         }
-        MemberGroupRelation::bind_group(Config::get('member_rule.youke_group'), $member_id,$invitation_id);
+        $group_id = Config::get('member_rule.youke_group');
+        MemberGroupRelation::bind_group($group_id, $member_id, $invitation_id);
+
+        //添加路径
+        if($invitation_id > 0){
+            list($path, $group, $all_path, $all_path_group) = self::getMemberPath($invitation_id, $group_id[0]);
+            MemberGroupRelationModel::where(['member_id'=>$member_id])
+                ->update(['top_id'=>$invitation_id, 'path'=>$path, 'path_group'=>$group, 'all_path'=>$all_path, 'all_path_group'=>$all_path_group]);
+        }
     }
 
 
@@ -992,5 +1017,132 @@ class Member extends BaseModel
         $relation = $this->belongsTo(MemberGroupRelation::class, 'member_id', 'member_id');
         $relation->field(['member_id', 'top_id']);
         return $relation;
+    }
+
+    /**
+     * 获取角色和对应的价格
+     *
+     * @param $name
+     * @return array
+     */
+    public static function getMemberPrice($name){
+        switch ($name){
+            case '代理人':
+                $member_group_id = MemberGroupRelation::four;
+                $member_price = MemberModel::FOUR_PRICE;
+                break;
+            case '执行董事':
+                $member_group_id = MemberGroupRelation::three;
+                $member_price = MemberModel::THREE_PRICE;
+                break;
+            case '全球合伙人':
+                $member_group_id = MemberGroupRelation::second;
+                $member_price = MemberModel::SECOND_PRICE;
+                break;
+            case '联合创始人':
+                $member_group_id =  MemberGroupRelation::first;
+                $member_price = MemberModel::FIRST_PRICE;
+                break;
+            default:
+                $member_group_id =  MemberGroupRelation::four;
+                $member_price = MemberModel::FOUR_PRICE;
+                break;
+        }
+
+        return [$member_group_id, $member_price];
+    }
+
+    /**
+     * 获取路径
+     *
+     * @param $top_id
+     * @param $group_id
+     * @return array
+     */
+    public static function getMemberPath($top_id, $group_id){
+        //对应关系
+        $top_info = MemberGroupRelation::get_top($top_id);
+        //推荐人等级大于被推人，
+        $path = [0,0,0,0,0,0];
+        $group = [0,0,0,0,0,0];
+        $top_path = explode(',', $top_info['path']);
+        $top_group = explode(',', $top_info['path_group']);
+        //游客推荐
+        if($top_info['group_id'] == 7){
+            if ($group_id == 7) {
+                $path[0] = $top_path[0];
+                $group[0] = 5;
+                $path[1] = $top_path[1];
+                $group[1] = $top_path[1] > 0 ? 4: 0;
+                $path[2] = $top_path[2];
+                $group[2] = $top_path[2] > 0 ? 3: 0;
+                $path[3] = $top_path[3];
+                $group[3] = $top_path[3] > 0 ? 2: 0;
+            }else if ($group_id == 2) {
+                $path[0] = $top_path[0];
+                $group[0] = 5;
+                $path[1] = $top_path[1];
+                $group[1] = $top_path[1] > 0 ? 4: 0;
+                $path[2] = $top_path[2];
+                $group[2] = $top_path[2] > 0 ? 3: 0;
+            }else if ($group_id == 3) {
+                $path[0] = $top_path[0];
+                $group[0] = 5;
+                $path[1] = $top_path[1];
+                $group[1] = $top_path[1] > 0 ? 4: 0;
+            }else if ($group_id == 4) {
+                $path[0] = $top_path[0];
+                $group[0] = 5;
+            }
+        }else{
+            if($top_info['group_id'] > $group_id) {
+                if ($top_info['group_id'] == 5) {
+                    $path[0] = $top_info['member_id'];
+                    $group[0] = 5;
+                } else if ($top_info['group_id'] == 4) {
+                    $path[0] = $top_path[0];
+                    $group[0] = 5;
+                    $path[1] = $top_info['member_id'];
+                    $group[1] = 4;
+                } else if ($top_info['group_id'] == 3) {
+                    $path[0] = $top_path[0];
+                    $group[0] = 5;
+                    $path[1] = $top_path[1];
+                    $group[1] = 4;
+                    $path[2] = $top_info['member_id'];
+                    $group[2] = 3;
+                }else if ($top_info['group_id'] == 2) {
+                    $path[0] = $top_path[0];
+                    $group[0] = 5;
+                    $path[1] = $top_path[1];
+                    $group[1] = 4;
+                    $path[2] = $top_info[2];
+                    $group[2] = 3;
+                    $path[3] = $top_info['member_id'];
+                    $group[3] = 2;
+                }
+            }else if($top_info['group_id'] == $group_id){
+                $path = $top_path;
+                $group = $top_group;
+            }else{
+                if ($group_id == 2) {
+                    $path[0] = $top_path[0];
+                    $group[0] = 5;
+                    $path[1] = $top_path[1];
+                    $group[1] = $top_path[1] > 0 ? 4: 0;
+                    $path[2] = $top_path[2];
+                    $group[2] = $top_path[2] > 0 ? 3: 0;;
+                }else if ($group_id == 3) {
+                    $path[0] = $top_path[0];
+                    $group[0] = 5;
+                    $path[1] = $top_path[1];
+                    $group[1] = $top_path[1] > 0 ? 4: 0;
+                }else if ($group_id == 4) {
+                    $path[0] = $top_path[0];
+                    $group[0] = 5;
+                }
+            }
+        }
+        return [implode(',', $path), implode(',', $group), $top_info['all_path'].$top_id.',', $top_info['all_path_group'].$top_info['group_id'].',', ];
     }
 }

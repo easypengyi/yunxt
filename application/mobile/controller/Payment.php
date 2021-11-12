@@ -92,7 +92,7 @@ class Payment extends MobileController
                     break;
                 case PaymentTool::BALANCE:
                     sleep(1);
-                    $this->success('付款成功', $this->back_url($type));
+                    $this->success('付款成功', $this->back_url($type, $order_id));
                     break;
             }
         }
