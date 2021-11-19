@@ -46,7 +46,7 @@ abstract class MobileController extends WebController
             default:
                 $this->login_url = 'Login/index';
         }
-        //$this->wxshare();
+        $this->wxshare();
         $this->referer_self AND $this->http_referer = '';
     }
 

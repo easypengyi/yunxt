@@ -45,7 +45,7 @@ class Order extends AdminController
     public function index()
     {
 //        set_time_limit(0);
-        //设置全路径
+//        //设置全路径
 //        $data = MemberGroupRelationModel::all_list([],['group_id'=>7, 'top_id'=>array('gt', 0)])->toArray();
 //        foreach ($data as $val){
 //            $array = self::sort($val['member_id']);
@@ -221,7 +221,7 @@ class Order extends AdminController
 //        }
 
         //代理
-//        $where = ['group_id'=>2, 'top_id'=>array('gt', 1359)];
+//        $where = ['group_id'=>2, 'top_id'=>array('gt', 0)];
 //        $list = MemberGroupRelationModel::all_list([], $where)->toArray();
 //        foreach ($list as $value){
 //            $top = MemberGroupRelationModel::get_top($value['top_id']);
@@ -433,8 +433,8 @@ class Order extends AdminController
 //                }
 //            }
 //        }
-//
-//
+////
+////
 //        var_dump($list);die;
 
         $where = $this->search('order_sn', '输入需查询的订单号');
@@ -705,23 +705,24 @@ class Order extends AdminController
         }else{
             //平台结算
             self::commonAward($order, $money); //全国加权分红和运营中心奖励
+            $amount = $order['product_num'] * $member_price;
             //推荐同级或者上级
             if($member_group_id >= $top_group_id){
                 //推荐奖励
-                $amount = $order['product_num'] * $member_price;
-                $commission =  StrHelper::ceil_decimal($amount * $member_rate, 2);
+                $commission =  StrHelper::ceil_decimal($amount * $member_rate / 100, 2);
                 Member::commission_inc($order['top_id'], $commission);
                 MemberCommission::insert_log($order['top_id'], MemberCommission::recommend, $commission, $commission, '来自'.$order['nick_name'].'的推荐奖￥'.$commission, $order['order_id']);
-                //育成奖
-                $parent_info = MemberGroupRelationModel::get_top($order['top_id']);
-                if(!is_null($parent_info)){
-                    //代理人以上，并且被推入与推荐人的上级是同级或以上才有奖励哦
-                    $parent_group_id = MemberGroupRelationModel::get_group_id($parent_info['top_id']);
-                    if(!in_array($parent_group_id, [MemberGroupRelationModel::first, MemberGroupRelationModel::seven]) && $member_group_id >= $parent_group_id && $parent_info['top_id']>0){
-                        $commission =  StrHelper::ceil_decimal($amount * MemberModel::LEVEL_RATE, 2);
-                        Member::commission_inc($parent_info['top_id'], $commission);
-                        MemberCommission::insert_log($parent_info['top_id'], MemberCommission::level, $commission, $commission, '来自'.$order['nick_name'].'的育成奖￥'.$commission, $order['order_id']);
-                    }
+            }
+
+            //育成奖
+            $parent_info = MemberGroupRelationModel::get_top($order['top_id']);
+            if(!is_null($parent_info)){
+                //代理人以上，并且被推入与推荐人的上级是同级或以上才有奖励哦
+                $parent_group_id = MemberGroupRelationModel::get_group_id($parent_info['top_id']);
+                if(($parent_group_id == MemberGroupRelationModel::seven || $member_group_id >= $parent_group_id) && $parent_info['top_id']>0){
+                    $commission =  StrHelper::ceil_decimal($amount * MemberModel::LEVEL_RATE / 100, 2);
+                    Member::commission_inc($parent_info['top_id'], $commission);
+                    MemberCommission::insert_log($parent_info['top_id'], MemberCommission::level, $commission, $commission, '来自'.$order['nick_name'].'的育成奖￥'.$commission, $order['order_id']);
                 }
             }
 //            else{

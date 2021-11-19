@@ -436,7 +436,23 @@ class Order extends ApiController
 
 
         if ($two_mobile){
-            $two_id =  MemberModel::get(['member_tel'=>$two_mobile])['member_id'];
+            $two_id =  MemberModel::get(['member_tel'=>$two_mobile, 'del'=>0])['member_id'];
+            if(!empty($two_id)){
+                //所有接點必須是自己團隊以下,不可以平衡放或放置其他線
+                $member_ids =  MemberGroupRelation::where(['all_path'=>array('like', '%,'.$this->member_id.',%')])
+                    ->column('member_id');
+                if(count($member_ids)  > 0 ){
+                    $res_member = [];
+                    foreach ($member_ids as $val){
+                        $res_member[$val] = $val;
+                    }
+                    if(!isset($res_member[$two_id])){
+                        output_error('该接点人，不在团队内！');
+                    }
+                }else{
+                    output_error('该接点人，不在团队内！');
+                }
+            }
             (empty($two_id) AND Config::get('custom.invitation_code_check')) AND output_error('接点人手机号不存在！');
         }else{
             $two_id = 0;

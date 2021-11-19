@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use app\common\model\MemberGroupRelation;
 use app\common\model\Member as MemberModel;
+use app\common\model\OrderShop;
 use app\common\model\OrdersShop;
 use Exception;
 use think\Lang;
@@ -188,14 +189,17 @@ class Login extends AdminController
             $wheres['member_id'] = ['in',$where_ary];
             $wheres['status'] = ['gt',OrdersShop::STATUS_WAIT_PAY];
 
-            $num = OrdersShop::where($wheres)->sum('product_num');
+            $num = OrdersShop::where($wheres)->sum('product_num');//体系消费
+            $my_num = OrdersShop::where('member_id', $val['member_id'])
+                ->where('status', OrdersShop::STATUS_WAIT_PAY)->sum('product_num');//个人消费
+            $bd_num = OrderShop::where('member_id', $val['member_id'])->where('status', 6)->sum('product_num');//报单数量
 
-            if ($num >= 100){
+
+            if ($num >= 100 || ($my_num + $bd_num) >= 140){
                 MemberGroupRelation::where(['member_id'=>$val['member_id']])->setInc('group_id');
             }
         }
-
-
+        echo 'success';die;
     }
     /**
      * @throws \think\Exception
@@ -262,13 +266,16 @@ class Login extends AdminController
             $wheres['status'] = ['gt',OrdersShop::STATUS_WAIT_PAY];
 
             $num = OrdersShop::where($wheres)->sum('product_num');
+            $my_num = OrdersShop::where('member_id', $val['member_id'])
+                ->where('status', OrdersShop::STATUS_WAIT_PAY)->sum('product_num');//个人消费
+            $bd_num = OrderShop::where('member_id', $val['member_id'])->where('status', 6)->sum('product_num');//报单数量
 
-            if ($num >= 300){
+            if ($num >= 300 || ($my_num + $bd_num) >= 300){
                 MemberGroupRelation::where(['member_id'=>$val['member_id']])->setInc('group_id');
             }
         }
 
-
+        echo 'success';die;
     }
     /**
      * @throws \think\Exception
@@ -332,12 +339,17 @@ class Login extends AdminController
             $wheres['status'] = ['gt',OrdersShop::STATUS_WAIT_PAY];
 
             $num = OrdersShop::where($wheres)->sum('product_num');
+            $my_num = OrdersShop::where('member_id', $val['member_id'])
+                ->where('status', OrdersShop::STATUS_WAIT_PAY)->sum('product_num');//个人消费
 
-            if ($num >= 500){
+            $bd_num = OrderShop::where('member_id', $val['member_id'])->where('status', 6)->sum('product_num');//报单数量
+
+            if ($num >= 700 || ($my_num + $bd_num) >= 700){
                 MemberGroupRelation::where(['member_id'=>$val['member_id']])->setInc('group_id');
             }
         }
 
+        echo 'success';die;
     }
 
 
@@ -357,7 +369,7 @@ class Login extends AdminController
      * @description: 获得花生小程序的 token
      * @param {*}
      * @return {*}
-     */    
+     */
     public static function getMiniAppToken(){
         $currentFilePath=dirname(__FILE__);
         $tokenFilePath = $currentFilePath ."/../../../runtime/temp/hs97866.token.json";
@@ -397,7 +409,7 @@ class Login extends AdminController
                 echo $data->errmsg;
             }
             curl_close($ch);
-            
+
         }
 
         return $token;
@@ -407,10 +419,10 @@ class Login extends AdminController
      * @description: 从花生小程序同步订单
      * @param {*}
      * @return {*}
-     */    
+     */
     public static function syncOrderFromMiniProgram()
     {
-        
+
         $end_time = time();
         $start_time = $end_time - 7*24*3600;//单次最多是 7 天
         Login::syncOrderFromMiniProgramByTime($start_time,$end_time);
@@ -430,7 +442,7 @@ class Login extends AdminController
 
     public static function syncOrderFromMiniProgramByTime($start_time,$end_time)
     {
-     
+
 
         $token = Login::getMiniAppToken();
         $wxId = Config::get('hs97866.wxId');
@@ -505,7 +517,7 @@ class Login extends AdminController
                         'courier_sn'=>isset($item->logistics[0])?$item->logistics[0]->no:'',
                         'order_type'=>1,
                         'payment_id'=>2,//微信支付
-                        'member_id'=>0,//用户 id 
+                        'member_id'=>0,//用户 id
                         'money'=>$item->total_fee,
                         'amount'=>$item->amount,
                         'status'=>$status,
@@ -533,9 +545,9 @@ class Login extends AdminController
 
                     $flag_pay_commission=false;
                     $flag_insert=false;
-                 
+
                     if($row){
-                        
+
 
                         if($status != $row['status'] || $refund_status != $row['refund_status']){
                             $flag_insert=true;
@@ -550,7 +562,7 @@ class Login extends AdminController
                             $flag_pay_commission=true;
                         }
                         $flag_insert=true;
-                        
+
                     }
 
                     if($flag_insert){
@@ -567,10 +579,10 @@ class Login extends AdminController
                         }
                     }
 
-                    
+
                 }
             }
-           
+
         }
     }
 }

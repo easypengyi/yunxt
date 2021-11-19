@@ -28,7 +28,7 @@ class Defray extends ApiController
     {
         $payment_type = $this->get_param('payment_type', 1);
         $list['list'] = PaymentTool::instance()->paylist($payment_type);
-//        unset($list['list'][1]);
+        unset($list['list'][1]);
         output_success('', $list);
     }
 

@@ -29,14 +29,14 @@ class Member extends BaseModel
     const SEVEN_PRICE = 1800;  //体验官
     const FIVE_PRICE = 2388;  //游客
 
-    const FIRST_RATE = 0.20;   //推荐奖励
-    const SECOND_RATE = 0.17;   //推荐奖励
-    const THREE_RATE = 0.14;   //推荐奖励
-    const FOUR_RATE = 0.11;   //推荐奖励
-    const SEVEN_RATE = 0.08;  //推荐奖励
-    const FIVE_RATE = 0.05;  //推荐奖励
+    const FIRST_RATE = 20;   //推荐奖励
+    const SECOND_RATE = 17;   //推荐奖励
+    const THREE_RATE = 14;   //推荐奖励
+    const FOUR_RATE = 11;   //推荐奖励
+    const SEVEN_RATE = 8;  //推荐奖励
+    const FIVE_RATE = 5;  //推荐奖励
 
-    const LEVEL_RATE = 0.03; //育成奖3%
+    const LEVEL_RATE = 3; //育成奖3%
 
     protected $type = [
         'enable'     => 'boolean',
@@ -1060,11 +1060,15 @@ class Member extends BaseModel
      * @return array
      */
     public static function getMemberPath($top_id, $group_id){
-        //对应关系
-        $top_info = MemberGroupRelation::get_top($top_id);
+
         //推荐人等级大于被推人，
         $path = [0,0,0,0,0,0];
         $group = [0,0,0,0,0,0];
+        if(empty($top_id)){
+            return [implode(',', $path), implode(',', $group), '', ''];
+        }
+        //对应关系
+        $top_info = MemberGroupRelation::get_top($top_id);
         $top_path = explode(',', $top_info['path']);
         $top_group = explode(',', $top_info['path_group']);
         //游客推荐
@@ -1143,6 +1147,14 @@ class Member extends BaseModel
                 }
             }
         }
-        return [implode(',', $path), implode(',', $group), $top_info['all_path'].$top_id.',', $top_info['all_path_group'].',',$top_info['group_id'], ];
+
+        $all_path = $top_info['all_path'].$top_id.',';
+        $all_path_group = $top_info['all_path_group'].','.$top_info['group_id'];
+        if(empty($top_info['all_path'])){
+            $all_path = ','.$top_id.',';
+            $all_path_group = $top_info['group_id'];
+        }
+
+        return [implode(',', $path), implode(',', $group), $all_path, $all_path_group];
     }
 }

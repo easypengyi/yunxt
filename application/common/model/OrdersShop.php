@@ -851,6 +851,7 @@ class OrdersShop extends BaseModel
                 MemberCommission::insert_log($member_top['member_id'], MemberCommission::maker5, $other_commission, $other_commission, '来自'.$member_name.'的奖金'.$other_commission, $order_id);
             }
         }else{ //游客以上购买
+            $amount = $num * $money;
             if($member_group['group_id'] >= $member_top['group_id']){
                 switch ($member_top['group_id']){
                     case MemberGroupRelation::first:
@@ -869,23 +870,21 @@ class OrdersShop extends BaseModel
                         $member_rate = MemberModel::FOUR_RATE;
                         break;
                 }
-
                 //推荐奖励
-                $amount = $num * $money;
-                $commission =  StrHelper::ceil_decimal($amount * $member_rate, 2);
+                $commission =  StrHelper::ceil_decimal($amount * $member_rate / 100, 2);
                 Member::commission_inc($member_group['top_id'], $commission);
                 MemberCommission::insert_log($member_group['top_id'], MemberCommission::recommend, $commission, $commission, '来自'.$member_name.'的推荐奖￥'.$commission, $order_id);
+            }
 
-                //育成奖
-                $parent_info = MemberGroupRelationModel::get_top($member_group['top_id']);
-                if(!is_null($parent_info)){
-                    //代理人以上，并且被推入与推荐人的上级是同级或以上才有奖励哦
-                    $parent_group_id = MemberGroupRelationModel::get_group_id($parent_info['top_id']);
-                    if(!in_array($parent_group_id, [MemberGroupRelationModel::first, MemberGroupRelationModel::seven]) && $member_group['group_id'] >= $parent_group_id && $parent_info['top_id']>0){
-                        $commission =  StrHelper::ceil_decimal($amount * MemberModel::LEVEL_RATE, 2);
-                        Member::commission_inc($parent_info['top_id'], $commission);
-                        MemberCommission::insert_log($parent_info['top_id'], MemberCommission::level, $commission, $commission, '来自'.$member_name.'的育成奖￥'.$commission, $order_id);
-                    }
+            //育成奖
+            $parent_info = MemberGroupRelationModel::get_top($member_group['top_id']);
+            if(!is_null($parent_info)){
+                //代理人以上，并且被推入与推荐人的上级是同级或以上才有奖励哦
+                $parent_group_id = MemberGroupRelationModel::get_group_id($parent_info['top_id']);
+                if(($parent_group_id == MemberGroupRelationModel::seven || $member_group['group_id'] >= $parent_group_id) && $parent_info['top_id']>0){
+                    $commission =  StrHelper::ceil_decimal($amount * MemberModel::LEVEL_RATE / 100, 2);
+                    Member::commission_inc($parent_info['top_id'], $commission);
+                    MemberCommission::insert_log($parent_info['top_id'], MemberCommission::level, $commission, $commission, '来自'.$member_name.'的育成奖￥'.$commission, $order_id);
                 }
             }
         }

@@ -53,9 +53,9 @@ class Common extends AdminController
     {
         $invoice_type = Constant::invoice_array();
         $data_info    = OrderShopModel::get($id);
-        //$data_info['province'] = Region::get($data_info['province'])['name'];
-        //$data_info['city'] = Region::get($data_info['city'])['name'];
-        //$data_info['district'] = Region::get($data_info['district'])['name'];
+        $data_info['province'] = Region::get($data_info['province'])['name'];
+        $data_info['city'] = Region::get($data_info['city'])['name'];
+        $data_info['district'] = Region::get($data_info['district'])['name'];
         $this->assign('data_info', $data_info);
         $this->assign('invoice_type', $invoice_type);
         return $this->fetch_view();

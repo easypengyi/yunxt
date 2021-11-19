@@ -71,7 +71,7 @@
                     <tr>
                         <td height="40" style="padding-left:10px;" colspan="2">
                             <label>
-                               地址：&nbsp;{$data_info.address}
+                               地址：{$data_info.province}  {$data_info.city} {$data_info.district} {$data_info.address}
                             </label>
                         </td>
                     </tr>

@@ -54,24 +54,44 @@
                     <img src="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs7s.jpg"></a>
             </div>
         </figure>
+<!--        <figure>-->
+<!--            <div class="img-dv"><a href="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs8s.jpg" data-size="1024x1966">-->
+<!--                    <img src="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs8s.jpg"></a>-->
+<!--            </div>-->
+<!--        </figure>-->
+<!--        <figure>-->
+<!--            <div class="img-dv"><a href="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs9s.jpg" data-size="1024x1966">-->
+<!--                    <img src="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs9s.jpg"></a>-->
+<!--            </div>-->
+<!--        </figure>-->
+<!--        <figure>-->
+<!--            <div class="img-dv"><a href="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs10s.jpg" data-size="1024x1966">-->
+<!--                    <img src="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs10s.jpg"></a>-->
+<!--            </div>-->
+<!--        </figure>-->
+<!--        <figure>-->
+<!--            <div class="img-dv"><a href="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs11s.jpg" data-size="1024x1966">-->
+<!--                    <img src="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs11s.jpg"></a>-->
+<!--            </div>-->
+<!--        </figure>-->
         <figure>
-            <div class="img-dv"><a href="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs8s.jpg" data-size="1024x1966">
-                    <img src="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs8s.jpg"></a>
+            <div class="img-dv"><a href="__STATIC__/img/pt/a.png" data-size="1024x1966">
+                    <img src="__STATIC__/img/pt/a.png"></a>
             </div>
         </figure>
         <figure>
-            <div class="img-dv"><a href="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs9s.jpg" data-size="1024x1966">
-                    <img src="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs9s.jpg"></a>
+            <div class="img-dv"><a href="__STATIC__/img/pt/b.png" data-size="1024x1966">
+                    <img src="__STATIC__/img/pt/b.png"></a>
             </div>
         </figure>
         <figure>
-            <div class="img-dv"><a href="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs10s.jpg" data-size="1024x1966">
-                    <img src="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs10s.jpg"></a>
+            <div class="img-dv"><a href="__STATIC__/img/pt/c.png" data-size="1024x1966">
+                    <img src="__STATIC__/img/pt/c.png"></a>
             </div>
         </figure>
         <figure>
-            <div class="img-dv"><a href="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs11s.jpg" data-size="1024x1966">
-                    <img src="https://ydn-product.oss-cn-hangzhou.aliyuncs.com/upload/image/ptjs11s.jpg"></a>
+            <div class="img-dv"><a href="__STATIC__/img/pt/d.png" data-size="1024x1966">
+                    <img src="__STATIC__/img/pt/d.png"></a>
             </div>
         </figure>
         <figure>
