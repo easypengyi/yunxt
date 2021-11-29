@@ -63,7 +63,7 @@ class OrderWithdrawals extends BaseModel
      * @param $service_money
      * @return int
      */
-    public static function order_place($member_id, $account, $blank, $real_name, $money, $service_money)
+    public static function order_place($member_id, $account, $blank, $bank_name, $real_name, $money, $service_money)
     {
         $order['account']       = $account;
         $order['real_name']     = $real_name;
@@ -72,6 +72,7 @@ class OrderWithdrawals extends BaseModel
         $order['amount']        = $money + $service_money;
         $order['member_id']     = $member_id;
         $order['status']        = self::STATUS_WAIT_PAY;
+        $order['bank_name']     = $bank_name;
         $order['blank']         = $blank;
 
         $model = self::create($order);

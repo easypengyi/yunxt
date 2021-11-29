@@ -19,7 +19,11 @@
                 <input type="text" placeholder="请输入接收奖金的银行卡号"   value="{$member.account}" name="account"/>
             </div>
             <div>
-                <label>开户行：</label>
+                <label>银行名称：</label>
+                <input type="text" placeholder="请输入银行名称"  value="{$member.bank_name}"  name="bank_name"/>
+            </div>
+            <div>
+                <label>分行/支行：</label>
                 <input type="text" placeholder="请输入银行卡的开户行/分行/支行"  value="{$member.blank}"  name="blank"/>
             </div>
             <div>

@@ -77,6 +77,9 @@
                                         <a href="{:controller_url('delivery_examine',['id'=>$v.order_id])}" class="confirm-rst-url-btn" data-info="你确定要通过吗？" data-toggle="tooltip" title="通过">
                                             <span class="green"><i class="ace-icon fa fa-check-square bigger-130"></i></span>
                                         </a>
+                                        <a href="{:controller_url('cancel_order',['id'=>$v.order_id])}" class="confirm-rst-url-btn" data-info="你确定要取消吗？" data-toggle="tooltip" title="取消">
+                                            <span class="red"><i class="ace-icon fa fa-minus-square bigger-130"></i></span>
+                                        </a>
                                     </div>
                                     <div class="hidden-md hidden-lg">
                                         <div class="inline position-relative">

@@ -70,6 +70,9 @@
                                         <a href="{:controller_url('edit',['id'=>$v.member_id])}" data-toggle="tooltip" title="修改">
                                             <span class="green"><i class="ace-icon fa fa-pencil bigger-130"></i></span>
                                         </a>
+                                        <a href="{:controller_url('del',['id'=>$v.member_id])}" class="confirm-rst-url-btn" data-info="你确定要删除吗？" data-toggle="tooltip" title="删除">
+                                            <span class="red"><i class="ace-icon fa fa-trash-o bigger-130"></i></span>
+                                        </a>
                                     </div>
                                     <div class="hidden-md hidden-lg">
                                         <div class="inline position-relative">

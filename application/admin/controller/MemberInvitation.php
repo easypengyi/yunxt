@@ -8,6 +8,7 @@ use app\common\Constant;
 use app\common\controller\AdminController;
 use app\common\model\Member as MemberModel;
 use app\common\model\MemberInvitation as MemberInvitationModel;
+use think\Session;
 
 /**
  * 会员邀请 模块
@@ -36,7 +37,6 @@ class MemberInvitation extends AdminController
      */
     public function index()
     {
-
         $where = ['top_id'=>$this->member_id];
         $order = $this->sort_order(MemberModel::getTableFields());
 
@@ -50,7 +50,22 @@ class MemberInvitation extends AdminController
             $v['commission'] = number_format( $v['member']['commission'],2);
         }
         $this->assign($list->toArray());
-        $this->assign('return_url', folder_url('Member/index'));
+        $top  = MemberGroupRelation::get_top($this->member_id);
+        $session_member = Session::get('member_index');
+        if(empty($top['top_id']) || ($session_member == $this->member_id || empty($session_member))){
+            $return_url = folder_url('Member/index', ['page'=>Session::get('member_page')]);
+        }else{
+            $return_url = folder_url('MemberInvitation/index', ['member_id'=>$top['top_id']]);
+        }
+
+        //缓存
+        $ret_url = $this->http_referer;
+        if(strpos($ret_url,"member/index")){
+            Session::set('member_index', $this->member_id);
+        }
+
+
+        $this->assign('return_url', $return_url);
         return $this->fetch_view('', ['member_id']);
     }
 

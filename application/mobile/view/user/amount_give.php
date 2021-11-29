@@ -13,7 +13,10 @@
             </div>
             <div>
                 <label>转赠人手机：</label>
-                <input type="number" placeholder="绑定的手机号" name="mobile"/>
+                <input type="number" placeholder="绑定的手机号" id="mobile" name="mobile"/>
+            </div>
+            <div>
+                <label>转赠人姓名：</label><span id="member_name"></span>
             </div>
         </form>
     </div>
@@ -33,6 +36,24 @@
             $('.ajax-form').submit();
         });
 
+        $("#mobile").bind('input propertychange',function() {
+            //dosomething
+            var mobile = this.value;
+            if(mobile.length == 11){
+                $.ajax({
+                    type: 'POST',
+                    url: "{:folder_url('Ajax/member')}",
+                    data: {mobile: mobile},
+                    success: function (result) {
+                        if (result.code == 1) {
+                            $('#member_name').text(result.data.data.member.member_realname)
+                        }else{
+                            $('#member_name').text('未找到转赠人信息！')
+                        }
+                    }
+                });
+            }
+        });
     });
 
 </script>

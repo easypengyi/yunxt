@@ -403,6 +403,7 @@ class User extends MobileController
             $param = [
                 'money' => input('money', ''),
                 'account' => input('account', ''),
+                'bank_name' => input('bank_name', ''),
                 'blank' => input('blank', ''),
                 'real_name' => input('real_name', ''),
                 'mobile' => input('mobile'),
@@ -416,6 +417,7 @@ class User extends MobileController
         $this->assign('title', '奖金提现');
         $this->assign('service_money', number_format(ConfigureModel::getValue('withdrawal_service_ratio'),1));
         $this->assign('return_url', controller_url('amount'));
+
         return $this->fetch();
     }
 

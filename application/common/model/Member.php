@@ -158,6 +158,7 @@ class Member extends BaseModel
             'account',
             'real_name',
             'blank',
+            'bank_name'
         ];
 
         $where['member_tel'] = $mobile;
@@ -202,6 +203,7 @@ class Member extends BaseModel
             'account',
             'real_name',
             'blank',
+            'bank_name'
         ];
 
         $show_all OR $where['del'] = false;

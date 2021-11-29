@@ -475,4 +475,14 @@ class Ajax extends MobileController
         $result = $this->api('Member', 'student_list', $param);
         $this->success_result($result);
     }
+
+    /**
+     * 查找转赠人信息
+     *
+     * @throws Exception
+     */
+    public function member(){
+        $result =  $this->api('Member', 'member_info',['mobile'=>input('mobile', '')]);
+        $this->success_result($result);
+    }
 }

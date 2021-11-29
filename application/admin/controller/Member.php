@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 
 use app\common\model\MemberBalance;
+use app\common\model\MemberCommission;
 use app\common\model\MemberGroupRelation;
 use think\Db;
 use Exception;
@@ -11,6 +12,8 @@ use helper\ValidateHelper;
 use app\common\controller\AdminController;
 use app\common\model\Member as MemberModel;
 use app\common\model\MemberGroupRelation as MemberGroupRelationModel;
+use think\Request;
+use think\Session;
 
 /**
  * 会员 模块
@@ -82,6 +85,8 @@ class Member extends AdminController
         }
 
         $this->assign($list->toArray());
+        Session::set('member_index', '');
+        Session::set('member_page', intval(Request::instance()->param('page', 0)));
         return $this->fetch_view();
     }
 
@@ -182,6 +187,8 @@ class Member extends AdminController
             $this->cache_clear();
             $this->success('信息新增成功！', input('return_url', $return_url));
         }
+
+        $this->assign('areas', []);
 
         $this->assign('return_url', $this->http_referer ?: $return_url);
         return $this->fetch_view('edit');
@@ -571,5 +578,17 @@ class Member extends AdminController
      */
     private function cache_clear()
     {
+    }
+
+
+    public function commission(){
+        //$where = $this->search('member_realname|member_tel', '输入需查询的姓名、手机号');
+        $where['member_id'] = intval(Request::instance()->param('id', 0));
+
+        $order = $this->sort_order(MemberCommission::getTableFields(), 'commission_id', 'desc');
+
+        $list = MemberCommission::page_list($where, $order);
+        $this->assign($list->toArray());
+        return $this->fetch_view();
     }
 }

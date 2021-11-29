@@ -977,4 +977,19 @@ class Member extends ApiController
         $result OR output_error('修改推送状态失败！');
         output_success('修改推送状态成功！');
     }
+
+    /**
+     * 获取用户信息接口
+     * @return void
+     * @throws Exception
+     */
+    public function member_info()
+    {
+        $mobile = $this->get_param('mobile');
+
+        $member = MemberModel::member_info($mobile);
+        empty($member) AND output_error('该用户不存在！');
+
+        output_success('', ['member' => $member]);
+    }
 }
