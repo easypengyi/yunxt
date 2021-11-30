@@ -2,22 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9c5f77d0-5690-4a85-a2a4-efe5894c6054" name="Default Changelist" comment="3.0逻辑修改--v2">
-      <change afterPath="$PROJECT_DIR$/application/admin/view/member/commission.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/controller/Member.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/Member.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/controller/MemberInvitation.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/MemberInvitation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/admin/controller/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/Order.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/member/edit.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/member/edit.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/member/tourist.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/member/tourist.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/order/check_index.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/order/check_index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/api/controller/Member.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/api/controller/Member.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/api/controller/Receivable.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/api/controller/Receivable.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/common/model/Member.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/common/model/Member.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/common/model/OrderWithdrawals.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/common/model/OrderWithdrawals.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/mobile/controller/Ajax.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/mobile/controller/Ajax.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/mobile/controller/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/mobile/controller/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/mobile/view/user/amount_give.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/mobile/view/user/amount_give.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/mobile/view/user/amount_withdraw.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/mobile/view/user/amount_withdraw.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +54,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/application/admin/view/member" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -113,6 +98,7 @@
       <workItem from="1637719991457" duration="1190000" />
       <workItem from="1637807829759" duration="1206000" />
       <workItem from="1638153612528" duration="17110000" />
+      <workItem from="1638240293111" duration="37000" />
     </task>
     <task id="LOCAL-00001" summary="sql">
       <created>1636342151507</created>
