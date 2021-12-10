@@ -196,16 +196,29 @@ class Order extends ApiController
         empty($data_info) AND output_success('数据不存在！');
 
 
-        //如果订单已经支付，则还需要退款
-        if($data_info->getAttr('status')==OrderShopModel::STATUS_ALREADY_PAY){
-            //更新退款申请状态为“完成审批”
-            $data2   = [
-                'refund_status' => OrdersShopModel::REFUND_STATUS_SUCCESS
-            ];
-            $data_info->save($data2);
-            $data_info->order_refund(true);//发起退款
+        try {
+            Db::startTrans();
+            //如果订单已经支付，则还需要退款
+            if($data_info->getAttr('status')==OrderShopModel::STATUS_ALREADY_PAY){
+                //更新退款申请状态为“完成审批”
+                $data2   = [
+                    'refund_status' => OrdersShopModel::REFUND_STATUS_SUCCESS
+                ];
+                $data_info->save($data2);
+                $data_info->order_refund(true);//发起退款
+
+                //云库存取消，需要返回
+                if($data_info->getAttr('order_type') == 2){
+                    MemberModel::balance_inc($data_info->getAttr('member_id'), $data_info->getAttr('product_num')); //库存
+                    MemberBalance::insert_log($data_info->getAttr('member_id'),MemberBalance::SHOP_CANCEL, $data_info->getAttr('product_num'),'取消库存发货', 0);
+                }
+            }
+            $data_info->order_cancel();
+            Db::commit();
+        } catch (Exception $e) {
+            Db::rollback();
+            output_error('订单取消失败！');
         }
-        $data_info->order_cancel();
         // $result = OrderShopModel::order_cancel_batch($this->member_id, $order_id, true);
         // $result OR output_error('订单取消失败！');
         output_success('订单取消成功！');
@@ -835,19 +848,20 @@ class Order extends ApiController
         $info = Cache::get($order_key);
         empty($info) AND output_error('请勿重复提交订单！');
 
-        $result = MemberModel::balance_dec($this->member_id, $product_num);
-
-        if (!$result) {
-            $message = '云库存不足！';
-            output_error($message);
-        }
-        MemberBalance::insert_log($this->member_id,MemberBalance::SHOP,$product_num,'来自'.$address['consignee'].'的库存发货',0);
-
         try {
             $order_list   = [];
             $product_list = [];
             $total_money  = 0;
             Db::startTrans();
+            $result = MemberModel::balance_dec($this->member_id, $product_num);
+
+            if (!$result) {
+                Db::rollback();
+                $message = '云库存不足！';
+                output_error($message);
+            }
+            MemberBalance::insert_log($this->member_id,MemberBalance::SHOP,$product_num,'来自'.$address['consignee'].'的库存发货',0);
+
             foreach ($info['order'] as $k => $v) {
                 $v['product_image_id'] = $v['product_image']['file_id'];
                 // 去除多余变量

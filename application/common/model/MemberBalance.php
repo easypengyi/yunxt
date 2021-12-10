@@ -36,6 +36,11 @@ class MemberBalance extends BaseModel
 
     const reduce = 13;
 
+    const SHOP_CANCEL = 14; //取消订单
+
+
+
+
     protected $autoWriteTimestamp = true;
 
     //-------------------------------------------------- 静态方法
@@ -52,7 +57,7 @@ class MemberBalance extends BaseModel
 
         $where['member_id'] = $member_id;
 
-        $where['type'] = ['in',[self::give,self::collect,self::recharge,self::balance_inc,self::SHOP]];
+        $where['type'] = ['in',[self::give,self::collect,self::recharge,self::balance_inc,self::SHOP, self::SHOP_CANCEL]];
 
         $order = ['create_time' => 'desc'];
 

@@ -717,9 +717,9 @@ class OrdersShop extends BaseModel
      */
     public function order_cancel()
     {
-        if ($this->getAttr('status') !== self::STATUS_WAIT_PAY) {
-            return false;
-        }
+//        if ($this->getAttr('status') !== self::STATUS_WAIT_PAY) {
+//            return false;
+//        }
 
         if (!$this->save(['status' => self::STATUS_INVALID])) {
             return false;

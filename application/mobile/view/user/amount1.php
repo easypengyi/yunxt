@@ -92,7 +92,7 @@
                                 var html = $('#record_data').find('li').clone();
                                 html.find('.description').text(val['description']);
                                 html.find('.amount-time').text(format_time('yyyy-MM-dd hh:mm', val['create_time'] * 1000));
-                                if(val['type'] === 9 || val['type'] === 11|| val['type'] === 12){
+                                if(val['type'] === 9 || val['type'] === 11|| val['type'] === 12 || val['type'] === 14){
                                     html.find('.amount').text((parseFloat(val['value']) > 0 ? '+' : '') + val['value']);
                                 }else{
                                     html.find('.amount').text((parseFloat(val['value']) > 0 ? '-' : '') + val['value']);

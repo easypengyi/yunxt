@@ -220,6 +220,7 @@ class Member extends ApiController
             empty($member) AND output_error('登录失败！');
 
             $this->member_id = $member->getAttr('member_id');
+            $member = MemberModel::member_info($this->member_id);
 
             $result = OauthUserModel::insert_oauth($login_type, $data['openid'], $this->member_id,$unionid);
             $result OR output_error('登录失败！');

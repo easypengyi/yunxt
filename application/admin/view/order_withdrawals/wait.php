@@ -74,8 +74,11 @@
                                             <!-- <a href="{:controller_url('examine',['id'=>$v.withdrawals_id])}" class="confirm-rst-url-btn" data-info="你确定完成吗？" data-toggle="tooltip" title="确认完成">
                                                 <span class="green"><i class="ace-icon fa fa-pencil bigger-130"></i></span>
                                             </a> -->
-                                            <a class="withdraw-change" data-id="{$v.withdrawals_id}"  data-toggle="modal" data-target="#withdraw_modal" title="确认完成">
+                                            <a class="withdraw-change" data-id="{$v.withdrawals_id}" data-money="{$v.money}"  data-toggle="modal" data-target="#withdraw_modal" title="确认完成">
                                                 <span class="green"><i class="ace-icon fa fa-pencil bigger-130"></i></span>
+                                            </a>
+                                            <a href="{:controller_url('cancel',['id'=>$v.withdrawals_id])}" class="confirm-rst-url-btn" data-info="你确定驳回吗？" data-toggle="tooltip" title="驳回">
+                                                <span class="red"><i class="ace-icon fa fa-close bigger-130"></i></span>
                                             </a>
                                         <?php endif; ?>
                                     </div>
@@ -122,6 +125,14 @@
                             <div class="space-4"></div>
 
                             <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 提现金额 </label>
+                                <div class="col-sm-10">
+                                    <input type="tel"  name="money" maxlength="8" placeholder="输入金额" class="col-xs-10 col-sm-5" required/>
+                                    <span class="lbl col-xs-12 col-sm-7"><span class="red">*必填</span></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 备注 </label>
                                 <div class="col-sm-10">
                                     <textarea name="remark" id="remark" value="" placeholder="请输入备注" class="col-xs-10 col-sm-5" style="width: 450px;"></textarea>
@@ -152,6 +163,7 @@
     $(function () {
         $('body').on('click', '.withdraw-change', function () {
             $('input[name=id]').val($(this).data('id'));
+            $('input[name=money]').val($(this).data('money'));
         });
     });
 </script>

@@ -67,7 +67,12 @@ class Product extends MobileController
         $result  = $this->api('Shop', 'product_detail', ['product_id' => $product_id]);
         $product = $result['data'];
         $share_code = url('mobile/product/detail', ['product_id'=>$product_id,'invitation_id'=>Member::create_invitation($this->member['member_id'])], true, true);
-        $this->assign('img',$this->member['member_headpic']['full_url']);
+        $member = $this->member;
+        $img_url = '';
+        if(isset($member['member_headpic'])){
+            $img_url = $member['member_headpic']['full_url'];
+        }
+        $this->assign('img', $img_url);
         $this->assign('share_img', $result['data']['share_image']['full_url']);
         $this->assign('share_code', $share_code);
         $this->assign('data_info', $product);

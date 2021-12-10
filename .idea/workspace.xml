@@ -2,7 +2,36 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9c5f77d0-5690-4a85-a2a4-efe5894c6054" name="Default Changelist" comment="3.0逻辑修改--v2">
-      <change beforePath="$PROJECT_DIR$/application/admin/controller/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/Order.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/controller/MemberInvitation.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/MemberInvitation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/controller/Order1.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/Order1.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/controller/OrderWithdrawals.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/OrderWithdrawals.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/view/member/stock.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/member/stock.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/view/order_withdrawals/wait.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/order_withdrawals/wait.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/api/controller/Member.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/api/controller/Member.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/api/controller/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/api/controller/Order.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/common/model/Member.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/common/model/Member.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/common/model/MemberBalance.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/common/model/MemberBalance.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/common/model/OrdersShop.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/common/model/OrdersShop.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/mobile/controller/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/mobile/controller/Product.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/mobile/view/user/amount1.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/mobile/view/user/amount1.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/mobile/view/user/amount_withdraw.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/mobile/view/user/amount_withdraw.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/extra/custom.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/extra/custom.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/extend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public_html/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/public_html/.htaccess" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public_html/errpage/400.html" beforeDir="false" afterPath="$PROJECT_DIR$/public_html/errpage/400.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public_html/errpage/401.html" beforeDir="false" afterPath="$PROJECT_DIR$/public_html/errpage/401.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public_html/errpage/403.html" beforeDir="false" afterPath="$PROJECT_DIR$/public_html/errpage/403.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public_html/errpage/404.html" beforeDir="false" afterPath="$PROJECT_DIR$/public_html/errpage/404.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public_html/errpage/405.html" beforeDir="false" afterPath="$PROJECT_DIR$/public_html/errpage/405.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public_html/errpage/500.html" beforeDir="false" afterPath="$PROJECT_DIR$/public_html/errpage/500.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public_html/errpage/503.html" beforeDir="false" afterPath="$PROJECT_DIR$/public_html/errpage/503.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public_html/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public_html/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public_html/robots.txt" beforeDir="false" afterPath="$PROJECT_DIR$/public_html/robots.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public_html/router.php" beforeDir="false" afterPath="$PROJECT_DIR$/public_html/router.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public_html/static/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/public_html/static/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public_html/web.config" beforeDir="false" afterPath="$PROJECT_DIR$/public_html/web.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/.gitignore" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -98,7 +127,13 @@
       <workItem from="1637719991457" duration="1190000" />
       <workItem from="1637807829759" duration="1206000" />
       <workItem from="1638153612528" duration="17110000" />
-      <workItem from="1638240293111" duration="37000" />
+      <workItem from="1638240293111" duration="1849000" />
+      <workItem from="1638324814586" duration="619000" />
+      <workItem from="1638411334365" duration="618000" />
+      <workItem from="1638497600115" duration="612000" />
+      <workItem from="1638772142028" duration="4520000" />
+      <workItem from="1638843915491" duration="15598000" />
+      <workItem from="1639106266209" duration="4715000" />
     </task>
     <task id="LOCAL-00001" summary="sql">
       <created>1636342151507</created>
@@ -121,7 +156,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636723942623</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="3.0逻辑修改--v2">
+      <created>1638240357092</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1638240357092</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -50,7 +50,7 @@
                         <tbody>
                         <?php foreach ($data_list as $v) : ?>
                             <tr>
-                                <?php if ($v['type'] == \app\common\model\MemberBalance::recharge): ?>
+                                <?php if ($v['type'] == \app\common\model\MemberBalance::recharge || $v['type'] == \app\common\model\MemberBalance::SHOP_CANCEL): ?>
                                     <td>+{$v.value}</td>
                                 <?php else: ?>
                                 <td>-{$v.value}</td>

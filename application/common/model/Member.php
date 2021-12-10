@@ -96,8 +96,9 @@ class Member extends BaseModel
         //添加路径
         if($invitation_id > 0){
             list($path, $group, $all_path, $all_path_group) = self::getMemberPath($invitation_id, $group_id[0]);
-            MemberGroupRelationModel::where(['member_id'=>$member_id])
+            MemberGroupRelation::where(['member_id'=>$member_id])
                 ->update(['top_id'=>$invitation_id, 'path'=>$path, 'path_group'=>$group, 'all_path'=>$all_path, 'all_path_group'=>$all_path_group]);
+
         }
     }
 
@@ -1101,7 +1102,7 @@ class Member extends BaseModel
                 $group[0] = 5;
             }
         }else{
-            if($top_info['group_id'] > $group_id) {
+            if($top_info['group_id'] > $group_id || $group_id == 7) {
                 if ($top_info['group_id'] == 5) {
                     $path[0] = $top_info['member_id'];
                     $group[0] = 5;

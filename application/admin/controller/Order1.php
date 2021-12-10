@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use app\common\model\Configure;
 use app\common\model\Member;
+use app\common\model\MemberBalance as MemberBalanceModel;
 use app\common\model\MemberCommission;
 use app\common\model\MemberGroupRelation;
 use app\common\model\Product as ProductModel;
@@ -151,7 +152,7 @@ class Order1 extends AdminController
             'status'          => OrdersShopModel::STATUS_INVALID,
         ];
         try {
-            
+
 
             $res = true;
 
@@ -167,6 +168,11 @@ class Order1 extends AdminController
             if($res){
                 Db::startTrans();
                 $data_info->save($data);
+                //云库存取消，需要返回
+                if($data_info->getAttr('order_type') == 2){
+                    Member::balance_inc($data_info->getAttr('member_id'), $data_info->getAttr('product_num')); //库存
+                    MemberBalanceModel::insert_log($data_info->getAttr('member_id'),MemberBalanceModel::SHOP_CANCEL, $data_info->getAttr('product_num'),'取消库存发货', 0);
+                }
                 Db::commit();
             }
             else{

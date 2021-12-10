@@ -2,8 +2,12 @@
 
 namespace app\admin\controller;
 
+use app\common\model\Configure as ConfigureModel;
+use app\common\model\Member as MemberModel;
 use app\common\model\Message as MessageModel;
 use Exception;
+use helper\StrHelper;
+use think\Db;
 use tool\PaymentTool;
 use app\common\controller\AdminController;
 use app\common\model\OrderWithdrawals as OrderWithdrawalsModel;
@@ -117,8 +121,53 @@ class OrderWithdrawals extends AdminController
         empty($data_info) AND $this->error('数据不存在！');
 
         $remark = input('remark', "");
+        $money = input('money', 0);
 
-        $result = $data_info->order_finish($data_info['order_sn'],$remark);
+        try {
+            Db::startTrans();
+            if($data_info['money'] != $money){
+                $ratio = ConfigureModel::getValue('withdrawal_service_ratio');
+                $service_amount = StrHelper::ceil_decimal(($money * $ratio/100), 2);
+                MemberModel::commission_inc($data_info['member_id'], $data_info['amount']); //之前的余额先恢复
+                $result = MemberModel::commission_dec($data_info['member_id'], $money+$service_amount);
+                $result OR $this->error('余额不足！');
+                //更新
+                $data_info->save(['money'=>$money,'service_money'=> $service_amount, 'amount'=> $money + $service_amount]);
+            }
+
+            $result = $data_info->order_finish($data_info['order_sn'], $remark);
+            $result OR $this->error('操作失败！');
+            MessageModel::commission_message_readed($id);
+            Db::commit();
+        } catch (Exception $e) {
+            Db::rollback();
+            $this->error('操作失败！');
+        }
+
+        // $this->success('操作完成！', $this->http_referer ?: $this->return_url());
+        $this->success('操作完成！', input('return_url', $this->http_referer ?: $this->return_url()));
+    }
+
+    /**
+     * 确认驳回
+     *
+     * @throws \think\Exception
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
+    public function cancel($id){
+        $this->is_ajax OR $this->error('请求错误！');
+
+        $where['withdrawals_id'] = $id;
+        $where['del']            = false;
+        $where['status']         = OrderWithdrawalsModel::STATUS_WAIT_PAY;
+
+        $data_info = OrderWithdrawalsModel::get($where);
+        empty($data_info) AND $this->error('数据不存在！');
+
+//        $remark = input('remark', "");
+
+        $result = $data_info->save(['status'=>OrderWithdrawalsModel::STATUS_INVALID]); //直接驳回
         $result OR $this->error('操作失败！');
         MessageModel::commission_message_readed($id);
         // $this->success('操作完成！', $this->http_referer ?: $this->return_url());

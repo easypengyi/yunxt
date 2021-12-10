@@ -8,7 +8,7 @@ return [
     // logo图片地址
     'logo_image'            => 'static/img/zfb.png',
     // 前端文件刷新版本号
-    'view_file_version'     => '9',
+    'view_file_version'     => '10',
     // 邀请码验证 是否必须正确
     'invitation_code_check' => true,
     // 第三方登录是否必须绑定号码

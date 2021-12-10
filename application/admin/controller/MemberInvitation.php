@@ -40,6 +40,10 @@ class MemberInvitation extends AdminController
         $where = ['top_id'=>$this->member_id];
         $order = $this->sort_order(MemberModel::getTableFields());
 
+        $r_member_ids = MemberGroupRelation::where($where)->column('member_id');
+        $member_ids = MemberModel::where('member_id', 'in', $r_member_ids)->where('del', 0)->column('member_id');
+        $where['member_id'] = array('in', $member_ids);
+
         $list = MemberGroupRelation::page_list($where, $order);
         if (!$list->isEmpty()) {
             $list->load(['member']);
