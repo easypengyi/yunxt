@@ -23,10 +23,19 @@ class OrderWithdrawals extends BaseModel
     // 状态-提现完成
     const STATUS_FINISH = 3;
 
+    const TYPE_BANK = 1;
+    const TYPE_WECHAT = 2;
+    const TYPE_ALIPAY = 3;
+    const TYPE_BALANCE = 4;
+
 
     protected $type = ['del' => 'boolean'];
 
     protected $insert = ['order_sn', 'order_time', 'del' => false];
+
+    protected $file = ['pay_image_id' => 'image'];
+
+    protected $file_head = ['pay_image_id'];
 
     protected $autoWriteTimestamp = true;
 
@@ -63,7 +72,7 @@ class OrderWithdrawals extends BaseModel
      * @param $service_money
      * @return int
      */
-    public static function order_place($member_id, $account, $blank, $bank_name, $real_name, $money, $service_money)
+    public static function order_place($member_id, $account, $blank, $bank_name, $real_name, $money, $service_money, $type, $file_id)
     {
         $order['account']       = $account;
         $order['real_name']     = $real_name;
@@ -74,6 +83,8 @@ class OrderWithdrawals extends BaseModel
         $order['status']        = self::STATUS_WAIT_PAY;
         $order['bank_name']     = $bank_name;
         $order['blank']         = $blank;
+        $order['type']          = $type;
+        $order['pay_image_id']  = $file_id;
 
         $model = self::create($order);
         if (empty($model)) {
@@ -113,6 +124,19 @@ class OrderWithdrawals extends BaseModel
         ];
     }
     //-------------------------------------------------- 实例方法
+    /**
+     * 订单提现方式数组
+     * @return array
+     */
+    public static function order_type_array()
+    {
+        return [
+            self::TYPE_BANK  => '银行卡',
+            self::TYPE_WECHAT => '微信',
+            self::TYPE_ALIPAY   => '支付宝',
+            self::TYPE_BALANCE   => '余额'
+        ];
+    }
 
     /**
      * 订单取消处理

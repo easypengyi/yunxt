@@ -256,6 +256,26 @@ class User extends MobileController
     }
 
     /**
+     * 分享邀请
+     * @return mixed
+     */
+    public function invitation_code()
+    {
+        $this->login_check();
+        $member = $this->member;
+        $img_url = '';
+        if(isset($member['member_headpic'])){
+            $img_url = $member['member_headpic']['full_url'];
+        }
+        $this->assign('img', $img_url);
+        $share_code = url('Login/register', ['invitation_id'=>Member::create_invitation($this->member['member_id'])], true, true);
+        $this->assign('share_code', $share_code);
+        $this->assign('title', '推广二维码');
+        $this->assign('return_url', controller_url('index'));
+        return $this->fetch();
+    }
+
+    /**
      * 中心授权订单
      * @return mixed
      */
@@ -401,6 +421,7 @@ class User extends MobileController
 
         if ($this->is_ajax) {
             $param = [
+                'type'=> input('type', ''),
                 'money' => input('money', ''),
                 'account' => input('account', ''),
                 'bank_name' => input('bank_name', ''),

@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use app\common\model\Configure as ConfigureModel;
 use app\common\model\Member as MemberModel;
+use app\common\model\MemberAccount;
 use app\common\model\Message as MessageModel;
 use Exception;
 use helper\StrHelper;
@@ -27,6 +28,7 @@ class OrderWithdrawals extends AdminController
         parent::_initialize();
         $this->param['payment'] = PaymentTool::instance()->payment_array();
         $this->param['status']  = OrderWithdrawalsModel::order_status_array();
+        $this->param['types'] = OrderWithdrawalsModel::order_type_array();
     }
 
     /**
@@ -74,7 +76,6 @@ class OrderWithdrawals extends AdminController
         if (!$list->isEmpty()) {
             $list->load(['Member']);
         }
-
         $this->assign($list->toArray());
         return $this->fetch_view();
     }
@@ -137,11 +138,19 @@ class OrderWithdrawals extends AdminController
 
             $result = $data_info->order_finish($data_info['order_sn'], $remark);
             $result OR $this->error('操作失败！');
+            //提现到余额
+            if($data_info['type'] == OrderWithdrawalsModel::TYPE_BALANCE ){
+                $member = MemberModel::get(['member_id'=>$data_info['member_id']]);
+                MemberModel::account_inc($data_info['member_id'], $money); //
+                MemberAccount::insert_log($data_info['member_id'], MemberAccount::TYPE_CASH,
+                    $money, $member['balance_amount'], $member['balance_amount'] + $money, $id);
+
+            }
             MessageModel::commission_message_readed($id);
             Db::commit();
         } catch (Exception $e) {
             Db::rollback();
-            $this->error('操作失败！');
+            $this->error($e->getMessage());
         }
 
         // $this->success('操作完成！', $this->http_referer ?: $this->return_url());

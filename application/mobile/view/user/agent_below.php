@@ -80,6 +80,7 @@
                         data['list'].forEach(function (val) {
                             var html = $('#agent_data').find('li').clone();
                             html.find('.pic_div').attr('data-id', val['member']['member_id']);
+                            html.find('.pic_div').attr('data-flag', val['flag']);
                             html.find('.member_headpic').attr('src', val['member']['member_headpic']['full_url']);
                             html.find('.member_nickname').text(val['member']['member_realname']);
                             html.find('.group_name').text(val['group_name']);
@@ -104,7 +105,9 @@
     });
 
     $('body').on('click', '.pic_div', function () {
-        window.location.href = encode_url($(this).data('href'), {invitation_id: $(this).data('id')});
+        if($(this).data('flag') == 1){
+            window.location.href = encode_url($(this).data('href'), {invitation_id: $(this).data('id')});
+        }
     });
 
     $('body').on('click', '.member_tel', function () {

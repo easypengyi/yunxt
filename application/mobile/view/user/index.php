@@ -46,6 +46,7 @@
                 <span style="font-size: 0.2rem;"> {$member.group_name|default=''}
                       <?php if (isset($member['is_center']) && !empty($member['is_center'])): ?>  | {$member.area}报单中心<?php endif; ?>
                 </span>
+                <span style="display: block;line-height: 0;">余额: {$member.balance_amount}</span>
             </h3>
 
         <a href="{:folder_url('User/message')}"><span class="mess">
@@ -185,6 +186,9 @@
         <?php endif; ?>
         <div class="midd-pass">
             <ul>
+                <a href="{:folder_url('User/invitation_code')}">
+                    <li><img src="__MODULE_IMG__/user_index16.png"  class="ii"> &nbsp;&nbsp;推广二维码<i></i></li>
+                </a>
                 <?php if (($member['group_id'] ?? 0) !== 7): ?>
                     <a href="{:folder_url('Product/one_index')}">
                         <li><img src="__MODULE_IMG__/user_index1.png"  class="ii"> &nbsp;&nbsp;系统报单<i></i></li>

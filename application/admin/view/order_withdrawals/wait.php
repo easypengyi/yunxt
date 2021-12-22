@@ -48,7 +48,9 @@
                             <th>金额</th>
                             <th>手续费</th>
                             <th>提现金额</th>
+                            <th>收款码</th>
                             <th>状态</th>
+                            <th>提现方式</th>
                             <th>时间</th>
                             <th class="th-operate">操作</th>
                         </tr>
@@ -66,7 +68,13 @@
                                 <td>{$v.amount}</td>
                                 <td>{$v.service_money}</td>
                                 <td>{$v.money}</td>
+                                <td>
+                                    <?php if (!empty($v['image']) && $v['image']['file_id'] > 0): ?>
+                                        <a href="{$v.image.full_url}" target="_blank"><img src="{$v.image.full_url}" width="50" height="50" alt=""/></a>
+                                    <?php endif; ?>
+                                </td>
                                 <td>{$status[$v.status]}</td>
+                                <td>{$types[$v.type]}</td>
                                 <td>{:date('Y-m-d H:i:s',$v.order_time)}</td>
                                 <td>
                                     <div class="hidden-sm hidden-xs action-buttons action-buttons-list">

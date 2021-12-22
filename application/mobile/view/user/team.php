@@ -36,7 +36,7 @@
                 <span>团队人数</span>
             </div>
             <div class="agent-list"  style="top:2.24rem;">
-                <ul id="agent_parent" class="minirefresh-wrap"  style="display:inline-block;">
+                <ul id="agent_parent" class="minirefresh-wrap"  style="display:inline-block;padding-left: 0">
                     <div id="agent-parent-data" class="minirefresh-scroll">
                     </div>
                 </ul>
@@ -63,16 +63,37 @@
 {block name="hide-content"}
 
 <div id="agent_parent_data">
-    <li data-id="" class="agent_below" style="height: 1.6rem;" data-href="{:folder_url('User/agent_below')}">
-        <div class="col"><p class="group_name" style=" line-height: 1.1rem;"></p></div>
-        <div class="col" >
-            <div class="pic"><img src="" alt="" class="member_headpic"/></div>
-            <span class="member_nickname"></span>
+<!--    <li data-id="" class="agent_below" style="height: 1.6rem;" data-href="{:folder_url('User/agent_below')}">-->
+<!--        <div class="col"><p class="group_name" style=" line-height: 1.1rem;"></p></div>-->
+<!--        <div class="col" >-->
+<!--            <div class="pic"><img src="" alt="" class="member_headpic"/></div>-->
+<!--            <span class="member_nickname"></span>-->
+<!--        </div>-->
+<!--        <div class="col"  ><p class="member_tel" style=" line-height: 1.1rem;"></p></div>-->
+<!--        <div class="col" ><p class="register_time" style=" line-height: 1.1rem;"></p></div>-->
+<!--    </li>-->
+    <li class="agent_below" style="height: 1.6rem;padding-top: 0.3rem;margin-bottom: 0" data-id="" data-href="{:folder_url('User/agent_below')}">
+        <div style="width:50%;margin-left: 0.2rem;">
+            <div style="width: 1rem;height: 1rem;margin-left: 0.2rem;border-radius: 50px;border: 1px solid #096640;background: #efefef;overflow: hidden;float: left;">
+                <img src="" alt="" class="member_headpic" style="width: 100%;min-height: 100%;">
+            </div>
+            <div style="height: 1rem;width: 1.3rem;float: left;margin-left: 0.3rem;">
+                <div style="width: 100%;margin-bottom: 0.15rem"  class="member_nickname">小明</div>
+                <div style="width: 100%;margin-bottom: 0.15rem"  class="member_tel">123456487</div>
+                <div style="width: 100%;color: #095e3b;" class="group_name">企业合伙人</div>
+            </div>
         </div>
-        <div class="col"  ><p class="member_tel" style=" line-height: 1.1rem;"></p></div>
-        <div class="col" ><p class="register_time" style=" line-height: 1.1rem;"></p></div>
+        <div style="width: 25%;height: 1rem;/* line-height: 0.6rem; */float: left;">
+            <div style="margin-bottom: 0.5rem;text-align: right;color:#A9A9A9;">团队人数</div>
+            <div style="text-align: right" class="team_num">232</div>
+        </div>
+        <div style="width: 25%;display: inline-block;float: right;margin-right: 0.5rem;">
+            <p style="margin-bottom: 0.5rem;text-align: right;color:#A9A9A9;">团队业绩</p>
+            <div style="text-align: right" class="team_amount">333000</div>
+        </div>
     </li>
 </div>
+
 
 <div id="agent_child_data">
     <li  data-id="" class="agent_below" style="height: 1.6rem;" data-href="{:folder_url('User/agent_below')}" >
@@ -125,7 +146,8 @@
                             html.find('.member_nickname').text(val['member']['member_realname']);
                             html.find('.member_tel').text(val['member']['member_tel']);
                             html.find('.group_name').text(val['group_name']);
-                            html.find('.register_time').text(val['team_num']);
+                            html.find('.team_num').text(val['team_num']);
+                            html.find('.team_amount').text(val['team_amount']);
                             $('#agent-parent-data').append(html);
                         })
 

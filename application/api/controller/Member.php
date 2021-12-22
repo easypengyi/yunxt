@@ -4,6 +4,8 @@ namespace app\api\controller;
 
 use app\common\model\MemberGroup;
 use app\common\model\MemberGroupRelation;
+use app\common\model\OrderShop;
+use app\common\model\OrdersShop;
 use app\common\model\OrdersShop as OrdersShopModel;
 use Exception;
 use think\Cache;
@@ -376,19 +378,46 @@ class Member extends ApiController
 
         empty($invitation_id) AND $invitation_id = $this->member_id;
 
-        $list = MemberGroupRelation::invitation_list($invitation_id,$category);
-
-        foreach ($list['list'] as $k=>&$v){
-            $v['team_num']   = $this->teamNum($v['member_id']);
+        $flag = 1;
+        $top = MemberGroupRelation::get(['member_id'=>$invitation_id]);
+        if(!is_null($top) && !empty($top['top_id'])){
+            $parent = MemberGroupRelation::get(['member_id'=>$top['top_id']]);
+            if(!is_null($parent) && !empty($parent['top_id'])){
+                $top = MemberGroupRelation::get(['member_id'=>$parent['top_id']]);
+                if(!is_null($parent) && $top['member_id'] == $this->member_id){
+                    $flag = 2;
+                }
+            }
         }
 
 
-        output_success('', $list);
+        $list = MemberGroupRelation::invitation_list($invitation_id,$category);
 
+        foreach ($list['list'] as $k=>&$v){
+            $v['flag'] = $flag;
+            $member_ids = $this->teamNum($v['member_id'], 1);
+            $v['team_num']   = count($member_ids);
+            $v['team_amount'] = $this->teamAmount($member_ids);
+        }
+
+        output_success('', $list);
+    }
+
+    public function teamAmount($member_ids){
+        if(count($member_ids) == 0){
+            return '0';
+        }
+        $wheres['member_id'] = ['in',$member_ids];
+        $wheres['status'] = ['gt',OrdersShop::STATUS_WAIT_PAY];
+
+        $num = OrdersShop::where($wheres)->sum('product_num');
+        $bd_num = OrderShop::where($wheres)->sum('product_num');//报单数量
+
+        return $num + $bd_num;
     }
 
 
-    public function teamNum($user_id = 0)
+    public function teamNum($user_id = 0, $type = 0)
     {
         if(!$user_id){
             $user_id = $this->member_id;
@@ -403,6 +432,9 @@ class Member extends ApiController
             if (in_array($b['top_id'], $data)) {
                 $data[] = $b['member_id'];
             }
+        }
+        if($type == 1){
+            return $data;
         }
         return count($data);
     }

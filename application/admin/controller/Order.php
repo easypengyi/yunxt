@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 
 use app\common\model\Member as MemberModel;
+use app\common\model\MemberBalance;
 use app\common\model\MemberGroupRelation;
 use app\common\model\Product as ProductModel;
 use app\common\model\MemberGroupRelation as MemberGroupRelationModel;
@@ -10,6 +11,8 @@ use app\common\model\MemberGroup as MemberGroupModel;
 
 use app\common\model\Reword;
 use helper\ValidateHelper;
+use think\Cache;
+use think\Config;
 use think\Db;
 use app\common\model\Member;
 use app\common\model\MemberCommission;
@@ -1498,4 +1501,121 @@ class Order extends AdminController
 
         $this->export_excel('中心授权订单', $title, $list->toArray());
     }
+
+    /**
+     * 编辑
+     * @param $id
+     * @return mixed
+     * @throws Exception
+     */
+    public function create()
+    {
+        $return_url = $this->return_url();
+        if ($this->is_ajax) {
+
+            $top_tel = input('top_tel', '');
+            $member_tel = input('member_tel', '');
+
+            $product_id  = input('group_id', '');
+            empty($product_id) AND output_error('请填写经销级别！');
+
+            $is_admin  = input('is_admin', '');
+            if(!in_array($is_admin, [0, 1])){
+                output_error('请填写结算方式！');
+            }
+            empty($top_tel) AND output_error('请填写推荐人手机号！');
+            empty($member_tel) AND output_error('请填写被推荐人手机号码！');
+
+            $top = Member::get(['member_tel'=>$top_tel]);
+            is_null($top) AND output_error('推荐人手机有误！');
+
+            $member = Member::get(['member_tel'=>$member_tel]);
+            is_null($member) AND output_error('被推荐人手机有误！');
+
+            $member_group = MemberGroupRelation::get(['member_id'=>$member['member_id'], 'top_id'=>$top['member_id']]);
+            is_null($member_group) AND output_error('推荐人和被推荐人关系有误！');
+            if($member_group['group_id'] != $product_id){
+                output_error('经销级别有误！');
+            }
+
+            $product = ProductModel::get(['product_id' =>$product_id, 'enable' => true, 'del' => false]);
+            is_null($product) AND output_error('商品不存在！');
+            $product_num = $product['number'];
+
+            $top_group = MemberGroupRelation::get(['member_id'=>$top['member_id']]);
+            //云库存
+            if($is_admin == 1){
+                if ($top_group['group_id'] < $product_id){
+                    output_error('级别不足，请选择平台结算方式！');
+                }
+                if($top['balance'] < $product_num){
+                    output_error('云库存不足！');
+                }
+            }
+
+            //是否已经报单
+            $info = OrderShopModel::get(['member_id'=>$top['member_id'], 'mobile'=>$member['member_tel'],
+                'status'=>['in', [OrderShopModel::STATUS_ALREADY_PAY, OrderShopModel::STATUS_FINISH]]]);
+            !is_null($info) AND output_error('订单已提交或审核中！');
+
+            $order['product_id']          = $product_id;
+            $order['product_name']        = $product['name'];
+            $order['product_num']         = $product_num;
+            $order['product_image_id']    = $product['image']['file_id'];
+            $order['original_unit_price'] = $product['original_price'];
+            $order['unit_price']          = $product['current_price'];
+            $order['money']               = $product['current_price'];
+            $order['amount']               = $order['money'];
+            $order['member_id']           = $top['member_id'];
+            $order['top_id']              = $top['member_id'];
+            $order['two_id']              = 0;
+            $order['nick_name']           = $member['member_realname'];
+            $order['mobile']              = $member['member_tel'];
+            $order['uid']                 = $member['uid'];
+            $order['is_admin']            = $is_admin;
+
+            try {
+                Db::startTrans();
+                $data_info = OrderShopModel::create($order);
+
+                if ($is_admin == 1) {
+                    $result = MemberModel::balance_dec($top['member_id'], $product_num);
+                    MemberBalance::insert_log($top['member_id'], MemberBalance::SHOP, $product_num, '来自' . $member['member_realname'] . '的云库存报单', 0);
+                }
+
+                $data   = [
+                    'refund_status'   => OrderShopModel::REFUND_STATUS_NO,
+                    'status'          => OrderShopModel::STATUS_FINISH,
+                    'courier_sn'      => input('courier_sn', ''),
+                    'distribution_id' => input('distribution_id', 0),
+                    'finish_time'   => time(),
+                ];
+
+                $data_info->save($data);
+                MemberModel::balance_inc($member['member_id'], $product_num);
+                Db::commit();
+            } catch (Exception $e) {
+                Db::rollback();
+                $this->error('报单失败！');
+            }
+
+            try {
+                Db::startTrans();
+                $group_path = [$top_group['path'], $top_group['path_group']];
+                self::newReward($data_info['order_id'], $group_path);
+                Db::commit();
+            } catch (Exception $e) {
+                Db::rollback();
+                $this->error('报单奖金结算失败！');
+            }
+
+            $this->cache_clear();
+            $this->success('报单成功！', input('return_url', $return_url));
+        }
+
+        $this->assign('return_url', $this->http_referer ?: $return_url);
+        return $this->fetch_view('create');
+    }
 }
+
+

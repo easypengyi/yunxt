@@ -159,7 +159,8 @@ class Member extends BaseModel
             'account',
             'real_name',
             'blank',
-            'bank_name'
+            'bank_name',
+            'balance_amount'
         ];
 
         $where['member_tel'] = $mobile;
@@ -204,7 +205,8 @@ class Member extends BaseModel
             'account',
             'real_name',
             'blank',
-            'bank_name'
+            'bank_name',
+            'balance_amount'
         ];
 
         $show_all OR $where['del'] = false;
@@ -430,6 +432,42 @@ class Member extends BaseModel
         $where = ['member_id' => $member_id, 'commission' => ['>=', $commission]];
 
         return self::where($where)->setDec('commission', $commission) != 0;
+    }
+
+    /**
+     * 账户余额增加
+     * @param $member_id
+     * @param $commission
+     * @return bool
+     * @throws ThinkException
+     */
+    public static function account_inc($member_id, $amount)
+    {
+        if (empty($amount)) {
+            return true;
+        }
+        $where = ['member_id' => $member_id];
+
+        return self::where($where)->setInc('balance_amount', $amount) != 0;
+    }
+
+
+    /**
+     * 账户余额减少
+     * @param $member_id
+     * @param $commission
+     * @return bool
+     * @throws ThinkException
+     */
+    public static function account_dec($member_id, $amount)
+    {
+        if (empty($amount)) {
+            return true;
+        }
+
+        $where = ['member_id' => $member_id, 'balance_amount' => ['>=', $amount]];
+
+        return self::where($where)->setInc('balance_amount', $amount) != 0;
     }
 
     /**
