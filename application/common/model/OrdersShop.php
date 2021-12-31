@@ -11,6 +11,7 @@ use think\Log;
 use think\Queue;
 use think\db\Query;
 use helper\TimeHelper;
+use tool\AliyunSms;
 use tool\payment\PaymentOrder;
 use app\common\core\BaseModel;
 use think\exception\DbException;
@@ -812,6 +813,14 @@ class OrdersShop extends BaseModel
 //                        }
                     }
             }
+        }
+
+        //发送提醒
+        $member = MemberModel::get($member_id);
+        if(!empty($member['member_tel'])){
+            $sms       = AliyunSms::instance();
+            $option = ['order'=> $order['order_sn']];
+            $sms->send_message($member['member_tel'], $option, 'order', $member_id);
         }
         return true;
 

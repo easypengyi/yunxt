@@ -13,6 +13,7 @@ use helper\ValidateHelper;
 use app\common\controller\ApiController;
 use app\common\model\Member as MemberModel;
 use app\common\model\OrderWithdrawals as OrderWithdrawalsModel;
+use tool\AliyunSms;
 
 /**
  * 收款 API
@@ -64,15 +65,30 @@ class Receivable extends ApiController
         try {
             Db::startTrans();
             $result = MemberModel::commission_dec($this->member_id, $money+$service_amount);
-            $result OR output_error('提现金额不足');
+            if(!$result){
+                Db::rollback();
+                output_error('提现金额不足');
+            }
             $order_id = OrderWithdrawalsModel::order_place($this->member_id, $account, $blank, $bank_name,$real_name, $money, $service_amount, $type, $pay_image_id);
-            empty($order_id) AND output_error('提现失败！');
+            if(empty($order_id)){
+                Db::rollback();
+                output_error('提现失败！');
+            }
             Db::commit();
         } catch (Exception $e) {
             Db::rollback();
             throw $e;
         }
+
         Message::commission($this->member_id, $money, $order_id);
+        //发送短信
+        $member = MemberModel::get($this->member_id);
+        if(!empty($member['member_tel'])){
+            $sms       = AliyunSms::instance();
+            $time = date('Y-m-d H:i:s');
+            $option = ['name'=> $member['member_realname'], 'datetime'=> $time, 'money'=> $money];
+            $sms->send_message($member['member_tel'], $option, 'cash', $this->member_id);
+        }
         output_success('您的提现申请已提交成功，公司会核对阁下的银行资料正确无误后，您的奖金将会在三个工作天到账');
     }
 

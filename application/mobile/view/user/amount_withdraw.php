@@ -20,7 +20,7 @@
            <span style="color:#333">
               提现方式：
             </span>
-                    <span style="color: darkred;position:relative;top: 0.3rem;left: -1.5rem;font-size: 0.05rem;">提现将额外扣除0.6%手续费。</span>
+                    <span style="color: darkred;position:relative;top: 0.3rem;left: -1.5rem;font-size: 0.25rem;">提现将额外扣除0.6%手续费。</span>
                 </div>
                 <div style="display:inline-block;float: right;">
                     <span style="margin-right: 0.1rem;" class="trigger">银行卡</span>

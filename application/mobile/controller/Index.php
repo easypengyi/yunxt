@@ -7,6 +7,7 @@ use app\common\controller\MobileController;
 use app\common\model\Banner as BannerModel;
 use think\Log;
 
+
 /**
  * 首页
  */
@@ -19,6 +20,7 @@ class Index extends MobileController
      */
     public function index()
     {
+
         $result = $this->api('Message', 'message_no_read_number');
         $this->assign('no_read_number', $result['data']['no_read_number']);
 

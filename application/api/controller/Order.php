@@ -25,6 +25,7 @@ use app\common\model\MemberCoupon as MemberCouponModel;
 use app\common\model\ProductEvaluate as ProductEvaluateModel;
 use app\common\model\OrderShopRefund as OrderShopRefundModel;
 use think\Log;
+use tool\AliyunSms;
 use tool\HashidsTool;
 
 /**
@@ -885,6 +886,14 @@ class Order extends ApiController
         }
 
         Cache::rm($order_key);
+        //发送短信
+        $member = MemberModel::get($this->member_id);
+        if(!empty($member['member_tel'])){
+            $sms       = AliyunSms::instance();
+            $time = date('Y-m-d H:i:s');
+            $option = ['name'=> $member['member_realname'], 'datetime'=> $time, 'reserve'=> $member['balance']];
+            $sms->send_message($member['member_tel'], $option, 'stock', $this->member_id);
+        }
 
         output_success('', $list);
     }

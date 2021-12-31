@@ -38,12 +38,15 @@
     "think-path": "thinkphp"
   },
   "config": {
-    "preferred-install": "dist"
+    "preferred-install": "dist",
+    "allow-plugins": {
+      "topthink/think-installer": true
+    }
   },
   "repositories": {
     "packagist": {
       "type": "composer",
-      "url": "https://packagist.laravel-china.org"
+      "url": "https://packagist.phpcomposer.com"
     }
   }
 }

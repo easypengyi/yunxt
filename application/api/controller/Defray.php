@@ -10,6 +10,7 @@ use app\common\model\Product;
 use Exception;
 use think\Db;
 use think\Log;
+use tool\AliyunSms;
 use tool\PaymentTool;
 use tool\payment\PaymentOrder;
 use app\common\controller\ApiController;
@@ -28,7 +29,7 @@ class Defray extends ApiController
     {
         $payment_type = $this->get_param('payment_type', 1);
         $list['list'] = PaymentTool::instance()->paylist($payment_type);
-        unset($list['list'][1]);
+//        unset($list['list'][1]);
         output_success('', $list);
     }
 
@@ -148,6 +149,13 @@ class Defray extends ApiController
                 'msg'    => '',
                 'data'   => $param,
             ];
+            //发送提醒
+            $member = MemberModel::get($member_id);
+            if(!empty($member['member_tel'])){
+                $sms       = AliyunSms::instance();
+                $option = ['order'=> $order['order_sn']];
+                $sms->send_message($member['member_tel'], $option, 'order', $member_id);
+            }
             Db::commit();
         }catch (Exception $e) {
             Db::rollback();
