@@ -85,7 +85,7 @@
                                 var html = $('#record_data').find('li').clone();
                                 html.find('.description').text(val['description']);
                                 html.find('.amount-time').text(format_time('yyyy-MM-dd hh:mm', val['create_time'] * 1000));
-                                html.find('.amount').text((parseFloat(val['value']) > 0 ? '+' : '') + val['value']);
+                                html.find('.amount').text((parseFloat(val['mode']) == 0 ? '+' : '-') + val['value']);
                                 $('#comprehensive-data').append(html);
                             });
                             if (data['page'] === data['total_page']) {

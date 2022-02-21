@@ -10,10 +10,24 @@
                 <input type="hidden" name="return_url" value="{$return_url}"/>
 
 
+
                 <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 云库存数量 </label>
+                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 奖金池</label>
                     <div class="col-sm-10">
-                        <input type="tel" name="recharge_money"  maxlength="11" value="" placeholder="输入需要缩减的云库存数量" class="col-xs-10 col-sm-5" required/>
+
+
+                        <span class="lbl col-xs-12 col-sm-7">
+                            {$data_info.configure_value}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="space-4"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 缩减金额 </label>
+                    <div class="col-sm-10">
+                        <input type="tel" name="recharge_money"  maxlength="11" value="" placeholder="输入需要缩减的金额" class="col-xs-10 col-sm-5" required/>
                         <span class="lbl col-xs-12 col-sm-7"><span class="red">*必填</span></span>
                     </div>
                 </div>

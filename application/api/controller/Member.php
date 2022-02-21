@@ -680,9 +680,9 @@ class Member extends ApiController
     public function member_info_change()
     {
         $this->check_login();
-        $account = $this->get_param('account');
-        $blank = $this->get_param('blank');
-        $real_name = $this->get_param('real_name');
+        $account = $this->get_param('account', '');
+        $blank = $this->get_param('blank', '');
+        $real_name = $this->get_param('real_name', '');
         $file = null;
         if ($this->request->file()) {
             $result = $this->upload_thumb();

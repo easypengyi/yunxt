@@ -22,8 +22,9 @@ return [
         'access_key' => 'LTAI5tDGrHRSR7EdP3Ut6igF',
         'access_secret' => 'CntfoSLmInIrdluTInOaPILx3r7691',
         'sign' => '雅典娜商业管理',
+        'code' => 'SMS_231520116',
         'order' => 'SMS_231442284', //下单提醒
         'stock' => 'SMS_231452220', //库存提醒
-        'cash' => 'SMS_231437242'  //提现申请
+        'cash' => 'SMS_231437242',  //提现申请
     ]
 ];

@@ -7,6 +7,7 @@ use helper\StrHelper;
 use app\common\core\BaseModel;
 use think\exception\DbException;
 use think\Log;
+use think\model\relation\BelongsTo;
 
 /**
  * 佣金明细 模型
@@ -57,10 +58,49 @@ class MemberCommission extends BaseModel
     //执行董事奖金池
     const three = 13;
 
+    const sysRecharge = 21;  //系统增加
+    const sysReduce = 22;    //系统减少
+
+
+
 
     protected $autoWriteTimestamp = true;
 
     //-------------------------------------------------- 静态方法
+
+    public static function typeName($type = 0){
+
+        $list = [
+            ['value'=> self::SHOP, 'name'=> '商城'],
+            ['value'=> self::WITHDRAWALS, 'name'=> '提现'],
+            ['value'=> self::maker3, 'name'=> '分销奖'],
+            ['value'=> self::maker4, 'name'=> '批发奖'],
+            ['value'=> self::maker5, 'name'=> '维护奖'],
+            ['value'=> self::maker6, 'name'=> '维护奖'],
+            ['value'=> self::maker7, 'name'=> '职级奖'],
+            ['value'=> self::maker8, 'name'=> '报单奖'],
+            ['value'=> self::recommend, 'name'=> '推荐奖'],
+            ['value'=> self::first, 'name'=> '创始人奖金池'],
+            ['value'=> self::second, 'name'=> '合伙人奖金池'],
+            ['value'=> self::three, 'name'=> '执行董事奖金池'],
+            ['value'=> self::maker14, 'name'=> '商城'],
+            ['value'=> self::level, 'name'=> '育成奖'],
+            ['value'=> self::sysRecharge, 'name'=> '系统增加'],
+            ['value'=> self::sysReduce, 'name'=> '系统减少'],
+        ];
+
+        if($type > 0){
+            $res = '';
+            foreach($list as $key=>$val){
+                if($val['value'] == $type){
+                    $res = $val['name'];
+                }
+            }
+            $list = $res;
+        }
+
+        return $list;
+    }
 
 
     /**
@@ -115,7 +155,7 @@ class MemberCommission extends BaseModel
 
 
     public static function record_list1($group_id){
-        $field = ['commission_id', 'type', 'value', 'description', 'create_time'];
+        $field = ['commission_id', 'type', 'value', 'description', 'create_time', 'mode'];
         switch ($group_id){
             case 3:
                 $where['type'] = self::three;
@@ -128,6 +168,7 @@ class MemberCommission extends BaseModel
                 break;
         }
         $order = ['create_time' => 'desc'];
+        $where['mode'] = 0;
         $query = self::field($field);
         $list  = self::page_list($where, $order, $query);
 
@@ -204,14 +245,14 @@ class MemberCommission extends BaseModel
      * @param bool   $profit
      * @return static
      */
-    public static function insert_log($member_id, $type, $amount, $value, $description = '', $relation_id = 0, $profit = false
-    ) {
+    public static function insert_log($member_id, $type, $amount, $value, $description = '', $relation_id = 0, $by_member_id = 0) {
         $data['description'] = $description;
         $data['member_id']   = $member_id;
         $data['type']        = $type;
         $data['amount']      = $amount;
         $data['value']       = $value;
         $data['relation_id'] = $relation_id;
+        $data['by_member_id'] = $by_member_id;
         return self::create($data);
     }
 
@@ -284,4 +325,26 @@ class MemberCommission extends BaseModel
     //-------------------------------------------------- 修改器方法
 
     //-------------------------------------------------- 关联加载方法
+
+    /**
+     * 关联会员 一对一 属于
+     * @return BelongsTo
+     */
+    public function member()
+    {
+        $relation = $this->belongsTo(Member::class, 'member_id');
+        $relation->field(['member_id', 'member_realname', 'member_tel']);
+        return $relation;
+    }
+
+    /**
+     * 关联会员 一对一 属于
+     * @return BelongsTo
+     */
+    public function byMember()
+    {
+        $relation = $this->belongsTo(Member::class, 'by_member_id');
+        $relation->field(['member_id', 'member_realname', 'member_tel']);
+        return $relation;
+    }
 }

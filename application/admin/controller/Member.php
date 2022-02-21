@@ -5,6 +5,8 @@ namespace app\admin\controller;
 use app\common\model\MemberBalance;
 use app\common\model\MemberCommission;
 use app\common\model\MemberGroupRelation;
+use app\common\model\Reword;
+use helper\TimeHelper;
 use think\Db;
 use Exception;
 use app\common\Constant;
@@ -274,12 +276,13 @@ class Member extends AdminController
                 empty($money) AND $this->error('请输入充值库存！');
                 $pwd = input('recharge_pwd', '');
                 empty($pwd) AND $this->error('请输入密码！');
+                $remark = input('remark', '');
 
                 if ($pwd != 'sky61361545'){
                     $this->error('密码不正确！');
                 }else{
                     MemberModel::balance_inc($id, $money);
-                    MemberBalance::insert_log($id,MemberBalance::recharge,$money,'库存充值',$this->user['admin_id']);
+                    MemberBalance::insert_log($id,MemberBalance::recharge,$money,'库存充值',$this->user['admin_id'], $remark);
                 }
                 Db::commit();
             } catch (Exception $e) {
@@ -314,6 +317,7 @@ class Member extends AdminController
                 empty($money) AND $this->error('请输入缩减库存！');
                 $pwd = input('recharge_pwd', '');
                 empty($pwd) AND $this->error('请输入密码！');
+                $remark = input('remark', '');
 
                 if ($pwd != 'sky61361545'){
                     $this->error('密码不正确！');
@@ -327,7 +331,7 @@ class Member extends AdminController
             }
             $this->cache_clear();
             if ($res){
-                MemberBalance::insert_log($id,MemberBalance::reduce,$money,'库存缩减',$this->user['admin_id']);
+                MemberBalance::insert_log($id,MemberBalance::reduce,$money,'库存缩减',$this->user['admin_id'], $remark);
                 $this->success('缩减成功！', input('return_url', $return_url));
             }else{
                 $this->success('缩减失败！', input('return_url', $return_url));
@@ -425,25 +429,47 @@ class Member extends AdminController
             $this->assign('export', true);
             return;
         }
-
         $list = MemberModel::all_list([], $where, $order);
-        if (!$list->isEmpty()) {
-            $list->each(
-                function ($item) {
-                    /** @var MemberModel $item */
-                }
-            );
+        $data = $list->toArray();
+        $member_ids = [];
+        foreach ($data as $key=>$item){
+            $member_ids[] = $item['member_id'];
+        }
+
+        $where_top = ['member_id'=>array('in', $member_ids)];
+        $tops = MemberGroupRelation::all_list([], $where_top);
+        if (!$tops->isEmpty()) {
+            $tops->load(['top']);
+        }
+        $top_list = [];
+        foreach ($tops->toArray() as $item){
+            $item['member_realname'] = '';
+            $item['member_tel'] = '';
+            if(!empty($item['top'])){
+                $item['member_realname'] = $item['top']['member_realname'];
+                $item['member_tel'] = $item['top']['member_tel'];
+            }
+            $top_list[$item['member_id']] = $item;
+        }
+
+        foreach ($data as $key=>&$item){
+            if(isset($top_list[$item['member_id']])){
+                $top = $top_list[$item['member_id']];
+                $item['top_member_realname'] =$top['member_realname'];
+                $item['top_member_tel'] = $top['member_tel'];
+            }
         }
 
         $title = [
             'member_realname' => '姓名',
             'member_tel'      => '手机号',
+            'top_member_realname' =>'推荐人',
+            'top_member_tel' =>'推荐人手机号',
             'balance'         => '云库存',
             'commission'      => '佣金',
-
         ];
 
-        $this->export_excel('用户表', $title, $list->toArray());
+        $this->export_excel('用户表', $title, $data);
     }
 
     /**
@@ -580,15 +606,187 @@ class Member extends AdminController
     {
     }
 
-
-    public function commission(){
+    /**
+     * 创建订单所产生的佣金
+     *
+     * @param $id
+     * @return mixed
+     * @throws \think\exception\DbException
+     */
+    public function changeCommission($id){
+        //$data_info = MemberModel::get(['member_id'=> $id]);
         //$where = $this->search('member_realname|member_tel', '输入需查询的姓名、手机号');
-        $where['member_id'] = intval(Request::instance()->param('id', 0));
+        $where['by_member_id'] = intval(Request::instance()->param('id', 0));
+        $this->search['date']   = input('date', '');
+        $range_time = TimeHelper::range_time($this->search['date']);
+        empty($range_time) OR $where['create_time'] = ['between', $range_time];
 
         $order = $this->sort_order(MemberCommission::getTableFields(), 'commission_id', 'desc');
-
         $list = MemberCommission::page_list($where, $order);
+        if (!$list->isEmpty()) {
+            $list->load(['member']);
+            $list->each(function ($item){
+                $item->setAttr('type_name', MemberCommission::typeName($item->getAttr('type')));
+            });
+        }
+        $data = $list->toArray();
+        $member_ids = [];
+        foreach ($data['data_list'] as $key=>$item){
+            $member_ids[] = $item['by_member_id'];
+        }
+
+        $where_top = ['member_id'=>array('in', $member_ids)];
+        $tops = MemberGroupRelation::all_list([], $where_top);
+        $top_list = [];
+        foreach ($tops->toArray() as $item){
+            $top_list[$item['member_id']] = MemberGroupRelation::groupName($item['group_id']);
+        }
+
+        foreach ($data['data_list'] as $key=>&$item){
+            $item['group_name'] = '';
+            if(isset($top_list[$item['by_member_id']])){
+                $item['group_name'] = $top_list[$item['by_member_id']];
+            }
+        }
+
+        $this->assign('member_id', $where['by_member_id']);
+        $this->assign('return_url', controller_url('Admin/Member/index'));
+        $this->assign($data);
+        return $this->fetch_view('change_commission');
+
+    }
+
+    /**
+     * 佣金明细
+     *
+     * @param $id
+     * @return mixed
+     * @throws \think\exception\DbException
+     */
+    public function commission($id){
+        $return_url = $this->return_url();
+        $data_info = MemberModel::get(['member_id'=> $id]);
+        //$where = $this->search('member_realname|member_tel', '输入需查询的姓名、手机号');
+        $where['member_id'] = intval(Request::instance()->param('id', 0));
+        $this->search['date']   = input('date', '');
+        $range_time = TimeHelper::range_time($this->search['date']);
+        empty($range_time) OR $where['create_time'] = ['between', $range_time];
+
+        $order = $this->sort_order(MemberCommission::getTableFields(), 'commission_id', 'desc');
+        $this->exportCommission($where, $order);
+        $list = MemberCommission::page_list($where, $order);
+        if (!$list->isEmpty()) {
+            $list->load(['by_member']);
+        }
+        $this->assign('member_id', $where['member_id']);
+        $this->assign('data_info', $data_info);
+        $this->assign('return_url', controller_url('Admin/Member/index'));
         $this->assign($list->toArray());
         return $this->fetch_view();
+
     }
+
+    /**
+     * 数据导出
+     * @param $where
+     * @param $order
+     * @throws Exception
+     */
+    private function exportCommission($where, $order)
+    {
+        $export = input('export', false);
+
+        if (!$export) {
+            $this->assign('export', true);
+            return;
+        }
+
+        $list = MemberCommission::all_list([], $where, $order);
+        if (!$list->isEmpty()) {
+            $list->load(['by_member']);
+            $list->each(
+                function ($item) {
+                    if($item->getAttr('type') == MemberCommission::WITHDRAWALS || $item->getAttr('type') == MemberCommission::sysReduce){
+                        $item->setAttr('value', '-'. $item->getAttr('value'));
+                    }else{
+                        $item->setAttr('value', '+' . $item->getAttr('value'));
+                    }
+                    $item->setAttr('member_name', $item->getAttr('by_member_id') >0 ? $item->getAttr('by_member')['member_realname'] : '');
+                    $item->setAttr('create_time', date('Y-m-d H:i:s', $item->getAttr('create_time')));
+                }
+            );
+        }
+
+        $title = [
+            'value'        => '金额',
+            'member_name'  => '用户名',
+            'description'       => '描述',
+            'create_time'          => '时间'
+        ];
+
+        $this->export_excel('佣金明细', $title, $list->toArray());
+    }
+
+    /**
+     * 添加佣金记录
+     * @return mixed
+     * @throws Exception
+     */
+    public function addCommission($member_id)
+    {
+        $return_url = $this->return_url();
+        $data_info = MemberModel::get(['member_id'=> $member_id]);
+        if ($this->is_ajax) {
+            $money = input('money', '');
+            empty($money) AND $this->error('请输入增减的金额！');
+            $pwd = input('recharge_pwd', '');
+            empty($pwd) AND $this->error('请输入密码！');
+            $remark = input('remark', '');
+
+            if ($pwd != 'sky61361545'){
+                $this->error('密码不正确！');
+            }
+
+            $type = input('type', '');
+            $member_id = input('member_id', '');
+            empty($type) AND $this->error('请选择类型！');
+            empty($member_id) AND $this->error('数据错误，请重新进入后操作！');
+
+
+            try {
+                Db::startTrans();
+                $data_log = [];
+                if($type == 1){
+                    MemberModel::commission_inc($member_id, $money);
+                    $ctype = MemberCommission::sysRecharge;
+                }else{
+                    MemberModel::commission_dec($member_id, $money);
+                    $ctype = MemberCommission::sysReduce;
+                }
+
+                $data_log[1]['member_id']   = $member_id;
+                $data_log[1]['type']        = $ctype;
+                $data_log[1]['amount']      = $money;
+                $data_log[1]['value']       = $money;
+                $data_log[1]['description'] = $remark;
+                $data_log[1]['mode'] = $type == 1 ? 0 : 1;
+                $data_log[1]['relation_id'] = 0;
+                $data_log[1]['create_time'] = time();
+                MemberCommission::insert_log_all($data_log);
+
+                Db::commit();
+            } catch (Exception $e) {
+                Db::rollback();
+                $this->error('操作失败！');
+            }
+            $this->cache_clear();
+            $this->success('操作成功！', input('return_url', $return_url));
+        }
+
+        $this->assign('data_info', $data_info);
+        $this->assign('return_url', $this->http_referer ?: $return_url);
+        return $this->fetch_view('update_commission');
+    }
+
+
 }

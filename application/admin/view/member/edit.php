@@ -86,7 +86,7 @@
                         <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 佣金 </label>
                         <div class="col-sm-10">
                             <input type="number"  min="0" step="0.01" name="commission" id="commission" value="{$data_info.commission|default='0'}" placeholder="输入佣金" class="col-xs-10 col-sm-5"/>
-                            <span class="lbl col-xs-12 col-sm-7"><a href="{:folder_url('Member/commission',['id'=>$data_info.member_id])}" style="cursor:pointer;">详情</a></span>
+<!--                            <span class="lbl col-xs-12 col-sm-7"><a href="{:folder_url('Member/commission',['id'=>$data_info.member_id])}" style="cursor:pointer;">详情</a></span>-->
                         </div>
                     </div>
 

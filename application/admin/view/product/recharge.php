@@ -11,9 +11,9 @@
 
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 云库存数量 </label>
+                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 增加奖金 </label>
                     <div class="col-sm-10">
-                        <input type="tel" name="recharge_money"  maxlength="11" value="" placeholder="输入需要缩减的云库存数量" class="col-xs-10 col-sm-5" required/>
+                        <input type="tel" name="recharge_money"  maxlength="11" value="" placeholder="输入增加的金额" class="col-xs-10 col-sm-5" required/>
                         <span class="lbl col-xs-12 col-sm-7"><span class="red">*必填</span></span>
                     </div>
                 </div>

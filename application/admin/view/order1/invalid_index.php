@@ -49,6 +49,7 @@
                                 <th>收货地址</th>
                                 <th>订单价格</th>
                                 <th>状态</th>
+                                <th>下单会员</th>
                                 <th>下单渠道</th>
                                 <th>下单时间</th>
                             </tr>
@@ -65,6 +66,7 @@
                                     <td>{present name="v.address.address"}{$v.address.province} {$v.address.city} {$v.address.district} {$v.address.address}{/present}</td>
                                     <td>{$v.amount}</td>
                                     <td>{$status[$v.status]}</td>
+                                    <td>{$v.member.member_realname}</td>
                                     <td>{$v.order_type == 1 ? '平台下单' : '库存下单'}</td>
                                     <td>{:date('Y-m-d H:i:s',$v.order_time)}</td>
                                 </tr>

@@ -42,6 +42,7 @@
                         <tr>
                             <th>库存值</th>
                             <th>描述</th>
+                            <th>备注</th>
                             <th>操作人</th>
                             <th>操作时间</th>
                         </tr>
@@ -50,12 +51,13 @@
                         <tbody>
                         <?php foreach ($data_list as $v) : ?>
                             <tr>
-                                <?php if ($v['type'] == \app\common\model\MemberBalance::recharge || $v['type'] == \app\common\model\MemberBalance::SHOP_CANCEL): ?>
+                                <?php if ($v['type'] == \app\common\model\MemberBalance::recharge || $v['type'] == \app\common\model\MemberBalance::SHOP_CANCEL || $v['type'] == \app\common\model\MemberBalance::collect): ?>
                                     <td>+{$v.value}</td>
                                 <?php else: ?>
                                 <td>-{$v.value}</td>
                                 <?php endif; ?>
                                 <td>{$v.description}</td>
+                                <td>{$v.remark}</td>
                                 <td>{$v.admin.admin_username}</td>
                                <td>{:date('Y-m-d H:i:s',$v.create_time)}</td>
                             </tr>

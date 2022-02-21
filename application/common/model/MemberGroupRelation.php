@@ -26,6 +26,29 @@ class MemberGroupRelation extends BaseModel
     const four_price = 1180;  //全球合伙人
     const five_price = 980;  //联合合伙人
 
+    public static function groupName($group_id = 0){
+
+        $list = [
+            ['value'=> self::seven, 'name'=> '游客'],
+            ['value'=> self::five, 'name'=> '创客'],
+            ['value'=> self::four, 'name'=> '代理'],
+            ['value'=> self::three, 'name'=> '董事'],
+            ['value'=> self::second, 'name'=> '合伙人'],
+            ['value'=> self::first, 'name'=> '创始人']
+        ];
+
+        if($group_id > 0){
+            $res = '';
+            foreach($list as $key=>$val){
+                if($val['value'] == $group_id){
+                    $res = $val['name'];
+                }
+            }
+            $list = $res;
+        }
+        return $list;
+    }
+
 
 
     /**
@@ -240,6 +263,17 @@ class MemberGroupRelation extends BaseModel
     {
         $relation = $this->belongsTo(Member::class, 'member_id');
         $relation->field(['member_id', 'member_realname', 'member_tel', 'member_headpic_id','commission']);
+        return $relation;
+    }
+
+    /**
+     * 关联会员 一对一 属于
+     * @return BelongsTo
+     */
+    public function top()
+    {
+        $relation = $this->belongsTo(Member::class, 'top_id');
+        $relation->field(['member_id', 'member_realname', 'member_tel']);
         return $relation;
     }
 

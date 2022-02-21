@@ -80,7 +80,7 @@ class Login extends MobileController
             $this->set_token($result['data']['token']);
             $this->set_member($result['data']['member']);
 
-            $this->success('注册成功！', controller_url('regis_info'));
+            $this->success('恭喜您，注册成功！', folder_url('User/index'));
         }
 
         $this->assign('invitation', $invitation);

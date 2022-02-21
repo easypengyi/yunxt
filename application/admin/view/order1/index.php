@@ -69,6 +69,7 @@
                                 <th>收货人手机号</th>
                                 <th>收货人姓名</th>
                                 <th>状态</th>
+                                <th>下单会员</th>
                                 <th>下单渠道</th>
                                 <th>下单时间</th>
                             </tr>
@@ -85,6 +86,7 @@
                                     <td>{$v.address.mobile}</td>
                                     <td>{$v.address.consignee}</td>
                                     <td>{$status[$v.status]}</td>
+                                    <td>{$v.member.member_realname}</td>
                                     <td>{$v.order_type == 1 ? '平台下单' : '库存下单'}</td>
                                     <td>{:date('Y-m-d',$v.order_time)}</td>
                                 </tr>

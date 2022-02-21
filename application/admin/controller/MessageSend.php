@@ -2,7 +2,10 @@
 
 namespace app\admin\controller;
 
+use app\common\model\MemberCommission;
+use app\common\model\Reword;
 use Exception;
+use helper\StrHelper;
 use helper\TimeHelper;
 use app\common\controller\AdminController;
 use app\common\model\Configure as ConfigureModel;
@@ -30,6 +33,45 @@ class MessageSend extends AdminController
      */
     public function index()
     {
+//        $money = 5600;
+//        $order['order_id'] = 0;
+//        $order['nick_name'] = "黎绍康";
+//        $reward1 = StrHelper::ceil_decimal($money, 2)*0.03;//联合创始人奖金池
+//        $reward2 = StrHelper::ceil_decimal($money, 2)*0.02;//全球合伙人奖金池
+//        $reward3 = StrHelper::ceil_decimal($money, 2)*0.01;//执行董事奖金池
+//        $data_log = [];
+//
+//        Reword::commission_inc('first_commission', $reward1);
+//        $data_log[1]['member_id']   = 0;
+//        $data_log[1]['type']        = MemberCommission::first;
+//        $data_log[1]['amount']      = 0;
+//        $data_log[1]['value']       = $reward1;
+//        $data_log[1]['description'] = '来自'.$order['nick_name'].'的业绩分红';
+//        $data_log[1]['relation_id'] = $order['order_id'];
+//        $data_log[1]['create_time'] = time();
+//
+//        Reword::commission_inc('second_commission', $reward2);
+//        $data_log[2]['member_id']   = 0;
+//        $data_log[2]['type']        = MemberCommission::second;
+//        $data_log[2]['amount']      = 0;
+//        $data_log[2]['value']       = $reward2;
+//        $data_log[2]['description'] = '来自'.$order['nick_name'].'的业绩分红';
+//        $data_log[2]['relation_id'] = $order['order_id'];
+//        $data_log[2]['create_time'] = time();
+//
+//        Reword::commission_inc('three_commission', $reward3);
+//        $data_log[3]['member_id']   = 0;
+//        $data_log[3]['type']        = MemberCommission::three;
+//        $data_log[3]['amount']      = 0;
+//        $data_log[3]['value']       = $reward3;
+//        $data_log[3]['description'] = '来自'.$order['nick_name'].'的业绩分红';
+//        $data_log[3]['relation_id'] = $order['order_id'];
+//        $data_log[3]['create_time'] = time();
+//
+//        MemberCommission::insert_log_all($data_log);
+//        echo "success";
+//        die;
+
         $where = $this->search();
 
         $where['del'] = false;

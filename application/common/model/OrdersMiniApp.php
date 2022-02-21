@@ -601,6 +601,7 @@ class OrdersMiniApp extends BaseModel
     public static function order_status_array()
     {
         return [
+            self::STATUS_NO => '无',
             self::STATUS_INVALID             => '已取消',
             self::STATUS_WAIT_PAY             => '待支付',
             self::STATUS_ALREADY_PAY          => '待发货',

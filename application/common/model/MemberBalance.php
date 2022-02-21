@@ -185,13 +185,14 @@ class MemberBalance extends BaseModel
      * @param int    $relation_id
      * @return static
      */
-    public static function insert_log($member_id, $type, $value, $description = '', $relation_id = 0)
+    public static function insert_log($member_id, $type, $value, $description = '', $relation_id = 0, $remark = '')
     {
         $data['description'] = $description;
         $data['member_id']   = $member_id;
         $data['type']        = $type;
         $data['value']       = $value;
         $data['relation_id'] = $relation_id;
+        $data['remark'] = $remark;
         return self::create($data);
     }
 

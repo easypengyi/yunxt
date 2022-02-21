@@ -49,6 +49,7 @@
                             <th>订单价格</th>
                             <th>收货地址</th>
                             <th>状态</th>
+                            <th>下单会员</th>
                             <th>下单渠道</th>
                             <th>下单时间</th>
                             <th class="th-operate">操作</th>
@@ -66,6 +67,7 @@
                                 <td>{$v.amount}</td>
                                 <td>{$v.address.province} {$v.address.city} {$v.address.district} {$v.address.address}</td>
                                 <td>{$status[$v.status]}</td>
+                                <td>{$v.member.member_realname}</td>
                                 <td>{$v.order_type == 1 ? '平台下单' : '库存下单'}</td>
                                 <td>{:date('Y-m-d H:i:s',$v.order_time)}</td>
                                 <td>

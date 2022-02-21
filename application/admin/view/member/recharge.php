@@ -21,6 +21,17 @@
                 <div class="space-4"></div>
 
                 <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 备注 </label>
+                    <div class="col-sm-10">
+                        <input type="text" name="remark"  placeholder="输入备注" class="col-xs-10 col-sm-5" />
+                        <span class="lbl col-xs-12 col-sm-7">
+                        </span>
+                    </div>
+                </div>
+
+                <div class="space-4"></div>
+
+                <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 密码 </label>
                     <div class="col-sm-10">
                         <input type="password" name="recharge_pwd"  placeholder="输入密码" class="col-xs-10 col-sm-5" maxlength="15" minlength="6"/>

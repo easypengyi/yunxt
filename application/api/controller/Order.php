@@ -861,7 +861,7 @@ class Order extends ApiController
                 $message = '云库存不足！';
                 output_error($message);
             }
-            MemberBalance::insert_log($this->member_id,MemberBalance::SHOP,$product_num,'来自'.$address['consignee'].'的库存发货',0);
+            $log = MemberBalance::insert_log($this->member_id,MemberBalance::SHOP,$product_num,'来自'.$address['consignee'].'的库存发货',0);
 
             foreach ($info['order'] as $k => $v) {
                 $v['product_image_id'] = $v['product_image']['file_id'];
@@ -879,6 +879,8 @@ class Order extends ApiController
                 $total_money    = bcadd($total_money, $data['money'], 2);
             }
             $list = OrdersShopModel::order_place_batch($order_list);
+            MemberBalance::where('balance_id', $log['balance_id'])->update(['remark'=>$list['order_sn']]);
+
             Db::commit();
         } catch (Exception $e) {
             Db::rollback();

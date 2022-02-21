@@ -14,11 +14,11 @@
                     </li>
                     <li>
                         <input type="text" placeholder="请输入右侧验证码" maxlength="5" name="verify" id="verify_reg">
-                        <div class="yzm"><img src="{:folder_url('Sms/reg_verify')}" id="verify_img" alt=""></div>
+                        <div class="yzm" style="width: 35%;"><img src="{:folder_url('Sms/reg_verify')}" id="verify_img" alt=""></div>
                     </li>
                     <li>
                         <input type="text" placeholder="请输入短信验证码" name="code">
-                        <span id="yzm_reg" data-wait="0" data-interval="0">获取验证码</span>
+                        <span id="yzm_reg" data-wait="0" data-interval="0" style="width: 35%;">获取验证码</span>
                     </li>
                     <li>
                         <div class="pic"><img class="img2" src="__MODULE_IMG__/password.png" alt=""></div>
@@ -85,10 +85,10 @@
     function sms_count_down(value) {
         set_sms_count_down(value, '#yzm_reg', function (view, second) {
             view.text('重新发送(' + second + ')');
-            view.attr('style', 'background-color:#c8ccc8;color:#ffffff;');
+            //view.attr('style', 'color:#ffffff;width:30%;');
         }, function (view) {
             view.text('获取验证码');
-            view.attr('style', 'background-color:#00a4bc;color:#ffffff;');
+            //view.attr('style', 'color:#ffffff;width:30%;');
         });
     }
 </script>

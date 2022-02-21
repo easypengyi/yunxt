@@ -107,6 +107,13 @@
                                             <a href="{:controller_url('stock',['id'=>$v.member_id])}" data-toggle="tooltip" title="库存明细">
                                                 <span class="dark"><i class="ace-icon fa fa-bars bigger-130"></i></span>
                                             </a>
+                                            <a href="{:controller_url('commission',['id'=>$v.member_id])}" data-toggle="tooltip" title="佣金明细">
+                                                <span class="dark"><i class="ace-icon fa fa-money bigger-130"></i></span>
+                                            </a>
+                                            <a href="{:controller_url('changeCommission',['id'=>$v.member_id])}" data-toggle="tooltip" title="产生佣金">
+                                                <span class="dark"><i class="ace-icon fa fa-credit-card-alt"></i></span>
+                                            </a>
+
                                             <a href="{:controller_url('del',['id'=>$v.member_id])}" class="confirm-rst-url-btn" data-info="你确定要删除吗？" data-toggle="tooltip" title="删除">
                                                 <span class="red"><i class="ace-icon fa fa-trash-o bigger-130"></i></span>
                                             </a>

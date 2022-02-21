@@ -809,7 +809,7 @@ class OrdersShop extends BaseModel
                     if ($top){
 //                        if ($top['group_id'] != MemberGroupRelationModel::seven){
 //                            $this->newReward($group['top_id'],$order['unit_price'],$order['product_num'],$member_name,$group['group_id']);
-                            $this->newReward($group, $top, $order['unit_price'], $order['product_num'],$member_name, $order_id);
+                            $this->newReward($group, $top, $order['unit_price'], $order['product_num'],$member_name, $order_id, $member_id);
 //                        }
                     }
             }
@@ -840,10 +840,10 @@ class OrdersShop extends BaseModel
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public static function  newReward($member_group, $member_top, $money, $num, $member_name, $order_id){
+    public static function  newReward($member_group, $member_top, $money, $num, $member_name, $order_id, $by_member_id = 0){
 
         $reward = $num * Product::PRODUCT_PRICE;
-        self::commonReward($reward, $member_name, $order_id);
+        self::commonReward($reward, $member_name, $order_id, $by_member_id);
 
         //游客购买
         $other_commission = 0;
@@ -857,7 +857,7 @@ class OrdersShop extends BaseModel
             if($other_commission > 0){
                 $other_commission = StrHelper::ceil_decimal($other_commission, 2);
                 Member::commission_inc($member_top['member_id'], $other_commission);
-                MemberCommission::insert_log($member_top['member_id'], MemberCommission::maker5, $other_commission, $other_commission, '来自'.$member_name.'的奖金'.$other_commission, $order_id);
+                MemberCommission::insert_log($member_top['member_id'], MemberCommission::maker5, $other_commission, $other_commission, '来自'.$member_name.'的奖金'.$other_commission, $order_id, $by_member_id);
             }
         }else{ //游客以上购买
             $amount = $num * $money;
@@ -882,18 +882,23 @@ class OrdersShop extends BaseModel
                 //推荐奖励
                 $commission =  StrHelper::ceil_decimal($amount * $member_rate / 100, 2);
                 Member::commission_inc($member_group['top_id'], $commission);
-                MemberCommission::insert_log($member_group['top_id'], MemberCommission::recommend, $commission, $commission, '来自'.$member_name.'的推荐奖￥'.$commission, $order_id);
+                MemberCommission::insert_log($member_group['top_id'], MemberCommission::recommend, $commission, $commission, '来自'.$member_name.'的推荐奖￥'.$commission, $order_id, $by_member_id);
             }
 
             //育成奖
             $parent_info = MemberGroupRelationModel::get_top($member_group['top_id']);
             if(!is_null($parent_info)){
                 //代理人以上，并且被推入与推荐人的上级是同级或以上才有奖励哦
+                $path = [];
+                if(!empty($member_group['path'])){
+                    $path = explode(',', $member_group['path']);
+                }
                 $parent_group_id = MemberGroupRelationModel::get_group_id($parent_info['top_id']);
-                if(($parent_group_id == MemberGroupRelationModel::seven || $member_group['group_id'] >= $parent_group_id) && $parent_info['top_id']>0){
+                $diff_group = $parent_info['group_id'] - $parent_group_id;
+                if(($parent_group_id == MemberGroupRelationModel::seven || $diff_group>= 0) && !in_array($parent_info['top_id'], $path) && $parent_info['top_id']>0){
                     $commission =  StrHelper::ceil_decimal($amount * MemberModel::LEVEL_RATE / 100, 2);
                     Member::commission_inc($parent_info['top_id'], $commission);
-                    MemberCommission::insert_log($parent_info['top_id'], MemberCommission::level, $commission, $commission, '来自'.$member_name.'的育成奖￥'.$commission, $order_id);
+                    MemberCommission::insert_log($parent_info['top_id'], MemberCommission::level, $commission, $commission, '来自'.$member_name.'的育成奖￥'.$commission, $order_id, $by_member_id);
                 }
             }
         }
@@ -909,28 +914,28 @@ class OrdersShop extends BaseModel
                 $commission = $commission - $other_commission;//需要扣除游客或者体验官的奖励
                 $commission =  StrHelper::ceil_decimal($commission, 2);
                 Member::commission_inc($path[3], $commission);
-                MemberCommission::insert_log($path[3], MemberCommission::maker5, $commission, $commission, '来自'.$member_name.'的奖金￥'.$commission, $order_id);
+                MemberCommission::insert_log($path[3], MemberCommission::maker5, $commission, $commission, '来自'.$member_name.'的奖金￥'.$commission, $order_id, $by_member_id);
                 $unit_price = MemberModel::FOUR_PRICE;
             }
             //有董事哦
             if($path[2] > 0 && $group[2] == MemberGroupRelation::three){
                 $commission =  ($unit_price - MemberModel::THREE_PRICE) * $num;
                 Member::commission_inc($path[2], $commission);
-                MemberCommission::insert_log($path[2], MemberCommission::maker5, $commission, $commission, '来自'.$member_name.'的奖金￥'.$commission, $order_id);
+                MemberCommission::insert_log($path[2], MemberCommission::maker5, $commission, $commission, '来自'.$member_name.'的奖金￥'.$commission, $order_id, $by_member_id);
                 $unit_price = MemberModel::THREE_PRICE;
             }
             //有合伙人哦
             if($path[1] > 0 && $group[1] == MemberGroupRelation::second){
                 $commission =  ($unit_price - MemberModel::SECOND_PRICE) * $num;
                 Member::commission_inc($path[1], $commission);
-                MemberCommission::insert_log($path[1], MemberCommission::maker5, $commission, $commission, '来自'.$member_name.'的奖金￥'.$commission, $order_id);
+                MemberCommission::insert_log($path[1], MemberCommission::maker5, $commission, $commission, '来自'.$member_name.'的奖金￥'.$commission, $order_id, $by_member_id);
                 $unit_price = MemberModel::SECOND_PRICE;
             }
             //有创始人哦
             if($path[0] > 0 && $group[0] == MemberGroupRelation::first){
                 $commission =  ($unit_price - MemberModel::FIRST_PRICE) * $num;
                 Member::commission_inc($path[0], $commission);
-                MemberCommission::insert_log($path[0], MemberCommission::maker5, $commission, $commission, '来自'.$member_name.'的奖金￥'.$commission, $order_id);
+                MemberCommission::insert_log($path[0], MemberCommission::maker5, $commission, $commission, '来自'.$member_name.'的奖金￥'.$commission, $order_id, $by_member_id);
                 //$unit_price = MemberModel::SECOND_PRICE;
             }
         }
@@ -943,7 +948,7 @@ class OrdersShop extends BaseModel
      * @param $member_name
      * @param $order_id
      */
-    public static function  commonReward($reward, $member_name, $order_id){
+    public static function  commonReward($reward, $member_name, $order_id, $by_member_id){
         $reward1 = StrHelper::ceil_decimal($reward, 2)*0.03;//联合创始人奖金池
         $reward2 = StrHelper::ceil_decimal($reward, 2)*0.02;//全球合伙人奖金池
         $reward3 = StrHelper::ceil_decimal($reward, 2)*0.01;//执行董事奖金池
@@ -956,6 +961,7 @@ class OrdersShop extends BaseModel
         $data_log[1]['value']       = $reward1;
         $data_log[1]['description'] = '来自'.$member_name.'的业绩分红';
         $data_log[1]['relation_id'] = $order_id;
+        $data_log[1]['by_member_id'] = $by_member_id;
         $data_log[1]['create_time'] = time();
 
         Reword::commission_inc('second_commission', $reward2);
@@ -965,6 +971,7 @@ class OrdersShop extends BaseModel
         $data_log[2]['value']       = $reward2;
         $data_log[2]['description'] = '来自'.$member_name.'的业绩分红';
         $data_log[2]['relation_id'] = $order_id;
+        $data_log[2]['by_member_id'] = $by_member_id;
         $data_log[2]['create_time'] = time();
 
         Reword::commission_inc('three_commission', $reward3);
@@ -974,6 +981,7 @@ class OrdersShop extends BaseModel
         $data_log[3]['value']       = $reward3;
         $data_log[3]['description'] = '来自'.$member_name.'的业绩分红';
         $data_log[3]['relation_id'] = $order_id;
+        $data_log[3]['by_member_id'] = $by_member_id;
         $data_log[3]['create_time'] = time();
 
         MemberCommission::insert_log_all($data_log);

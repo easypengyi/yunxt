@@ -25,6 +25,16 @@ class Reword extends BaseModel
         return self::where($where)->setInc('configure_value', $commission) != 0;
     }
 
+    public static function commission_dec($configure_name, $commission)
+    {
+        if (empty($commission)) {
+            return true;
+        }
+        $where = ['configure_name' => $configure_name];
+
+        return self::where($where)->setDec('configure_value', $commission) != 0;
+    }
+
 
     //-------------------------------------------------- 实例方法
 
