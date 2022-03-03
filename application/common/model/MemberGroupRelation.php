@@ -26,7 +26,7 @@ class MemberGroupRelation extends BaseModel
     const four_price = 1180;  //全球合伙人
     const five_price = 980;  //联合合伙人
 
-    public static function groupName($group_id = 0){
+    public static function groupNames($group_id = 0){
 
         $list = [
             ['value'=> self::seven, 'name'=> '游客'],

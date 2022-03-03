@@ -577,7 +577,7 @@ class Login extends AdminController
 
                             OrderMiniApp::reward($item->id);
                         }
-                    }
+                }
 
 
                 }

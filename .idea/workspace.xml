@@ -1,41 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9c5f77d0-5690-4a85-a2a4-efe5894c6054" name="Default Changelist" comment="维护-v3">
-      <change afterPath="$PROJECT_DIR$/application/admin/view/member/change_commission.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/application/admin/view/member/update_commission.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/application/admin/view/product/recharge.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/application/admin/view/product/reduce.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/application/admin/view/product/reward.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/application/admin/view/product/stock.php" afterDir="false" />
+    <list default="true" id="9c5f77d0-5690-4a85-a2a4-efe5894c6054" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/controller/Login.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/Login.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/admin/controller/Member.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/Member.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/controller/MessageSend.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/MessageSend.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/controller/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/Order.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/controller/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/Product.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/member/commission.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/member/commission.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/member/edit.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/member/edit.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/member/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/member/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/member/recharge.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/member/recharge.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/member/reduce.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/member/reduce.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/member/stock.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/member/stock.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/order1/delivery_index.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/order1/delivery_index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/order1/distribution_index.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/order1/distribution_index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/order1/finish_index.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/order1/finish_index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/order1/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/order1/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/order1/invalid_index.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/order1/invalid_index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/api/controller/Member.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/api/controller/Member.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/api/controller/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/api/controller/Order.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/common/model/MemberBalance.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/common/model/MemberBalance.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/common/model/MemberCommission.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/common/model/MemberCommission.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/controller/Order1.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/Order1.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/controller/OrderMiniApp.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/OrderMiniApp.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/common/model/MemberGroupRelation.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/common/model/MemberGroupRelation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/common/model/OrdersMiniApp.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/common/model/OrdersMiniApp.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/common/model/OrdersShop.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/common/model/OrdersShop.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/common/model/Reword.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/common/model/Reword.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/mobile/controller/Login.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/mobile/controller/Login.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/mobile/view/login/register.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/mobile/view/login/register.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/mobile/view/user/amount2.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/mobile/view/user/amount2.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/sms.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/sms.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -120,19 +92,19 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="E:/www/dc-admin" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\php\yunxtn\extend\thinksdk" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\php\yunxtn\application\admin\view\member" />
       <recent name="E:\php\yunxtn\application\admin\view\product" />
       <recent name="E:\php\yunxtn\application\common\model" />
       <recent name="E:\php\yunxtn\extend\tool" />
       <recent name="E:\php\yunxtn\extend\OSS\src\OSS" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\php\yunxtn\extend\thinksdk" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -207,7 +179,13 @@
       <workItem from="1644893104454" duration="5267000" />
       <workItem from="1644977629393" duration="8462000" />
       <workItem from="1645081318332" duration="5017000" />
-      <workItem from="1645408925711" duration="1205000" />
+      <workItem from="1645408925711" duration="1912000" />
+      <workItem from="1645585409981" duration="7345000" />
+      <workItem from="1645669830952" duration="3161000" />
+      <workItem from="1646022933970" duration="594000" />
+      <workItem from="1646108545910" duration="1787000" />
+      <workItem from="1646213947162" duration="1238000" />
+      <workItem from="1646297746403" duration="341000" />
     </task>
     <task id="LOCAL-00001" summary="sql">
       <created>1636342151507</created>
@@ -258,7 +236,14 @@
       <option name="project" value="LOCAL" />
       <updated>1640933341460</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="维护-v4">
+      <created>1645433360937</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1645433360938</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -284,6 +269,7 @@
     <MESSAGE value="维护-v1" />
     <MESSAGE value="维护-v2" />
     <MESSAGE value="维护-v3" />
-    <option name="LAST_COMMIT_MESSAGE" value="维护-v3" />
+    <MESSAGE value="维护-v4" />
+    <option name="LAST_COMMIT_MESSAGE" value="维护-v4" />
   </component>
 </project>

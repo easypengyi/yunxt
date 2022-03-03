@@ -123,7 +123,7 @@ class Order1 extends AdminController
         try {
             Db::startTrans();
             $data_info->save($data);
-            self::reward($id);
+//            self::reward($id);
             Db::commit();
         } catch (Exception $e) {
             Db::rollback();

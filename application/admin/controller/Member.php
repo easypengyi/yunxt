@@ -14,6 +14,7 @@ use helper\ValidateHelper;
 use app\common\controller\AdminController;
 use app\common\model\Member as MemberModel;
 use app\common\model\MemberGroupRelation as MemberGroupRelationModel;
+use think\Log;
 use think\Request;
 use think\Session;
 
@@ -40,6 +41,7 @@ class Member extends AdminController
      */
     public function index()
     {
+        Log::write('111111', 'info');
         $where = $this->search('member_realname|member_tel', '输入需查询的姓名、手机号');
         $this->search['status'] = input('status', '');
         $this->search['stocks'] = input('stocks', '');
@@ -528,7 +530,7 @@ class Member extends AdminController
         $data['member_realname'] = input('member_realname', '');
         empty($data['member_realname']) AND $this->error('请设置用户名称！');
         $data['member_nickname'] = input('member_nickname', '');
-        $data['balance'] = input('balance', '');
+//        $data['balance'] = input('balance', '');
         $data['commission'] = input('commission', '');
 
         $data['top_id'] = input('invitation_id', '');
@@ -639,7 +641,7 @@ class Member extends AdminController
         $tops = MemberGroupRelation::all_list([], $where_top);
         $top_list = [];
         foreach ($tops->toArray() as $item){
-            $top_list[$item['member_id']] = MemberGroupRelation::groupName($item['group_id']);
+            $top_list[$item['member_id']] = MemberGroupRelation::groupNames($item['group_id']);
         }
 
         foreach ($data['data_list'] as $key=>&$item){

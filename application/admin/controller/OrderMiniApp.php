@@ -34,10 +34,10 @@ class OrderMiniApp extends AdminController
         $this->param['status']        = OrdersShopModel::order_status_array();
         $this->param['refund_status'] = OrdersShopModel::order_refund_status_array();
 
-        
+
     }
 
-    
+
 
     /**
      * 列表
@@ -127,7 +127,7 @@ class OrderMiniApp extends AdminController
         try {
             Db::startTrans();
             $data_info->save($data);
-            self::reward($id);
+//            self::reward($id);
             Db::commit();
         } catch (Exception $e) {
             Db::rollback();
@@ -156,7 +156,7 @@ class OrderMiniApp extends AdminController
             'status'          => OrdersShopModel::STATUS_INVALID,
         ];
         try {
-            
+
 
             $res = true;
 
@@ -193,15 +193,15 @@ class OrderMiniApp extends AdminController
      */
     public static  function reward($id){
         $order = OrdersShopModel::get($id);
-     
+
         $money = $order['product_num']*10;
-        
+
         $member_id = Member::find_member_city($order['address']['district']);
         if ($member_id){
             Member::commission_inc($member_id, $money);
             MemberCommission::insert_log($member_id, MemberCommission::city, $money, $money, '来自'.$order['address']['consignee'].'的城市特权奖', 0);
         }
-        
+
     }
 
     /**
