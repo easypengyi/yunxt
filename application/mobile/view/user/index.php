@@ -117,8 +117,8 @@
             </a>
         </div>
 
-        <?php if (($member['group_id'] ?? 0) !== 7): ?>
-            <?php if (($member['group_id'] ?? 0) <= 2): ?>
+
+            <?php if (($member['group_id'] ?? 0) <= 2 || ($member['group_id'] ?? 0) == 7): ?>
                 <div class="order-box">
                     <div class="order-item" >
                         <ul>
@@ -183,13 +183,12 @@
                     </div>
                 </div>
             <?php endif; ?>
-        <?php endif; ?>
+
         <div class="midd-pass">
             <ul>
                 <a href="{:folder_url('User/invitation_code')}">
                     <li><img src="__MODULE_IMG__/user_index16.png"  class="ii"> &nbsp;&nbsp;推广二维码<i></i></li>
                 </a>
-                <?php if (($member['group_id'] ?? 0) !== 7): ?>
                     <a href="{:folder_url('Product/one_index')}">
                         <li><img src="__MODULE_IMG__/user_index1.png"  class="ii"> &nbsp;&nbsp;系统报单<i></i></li>
                     </a>
@@ -199,7 +198,6 @@
                     <a href="{:folder_url('User/team')}">
                         <li><img src="__MODULE_IMG__/user_index3.png" class="ii">&nbsp;&nbsp;我的团队<i></i></li>
                     </a>
-                <?php endif; ?>
                 <?php if ($member['bind_mobile'] == false): ?>
                     <a href="{:folder_url('Login/phone_bind')}">
                         <li><img src="__MODULE_IMG__/phone_bind.png"  class="ii"> &nbsp;&nbsp;绑定手机<i></i></li>

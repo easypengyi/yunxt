@@ -51,7 +51,7 @@
             &nbsp;&nbsp;&nbsp;发货数量：
             <div style=" float: right;margin-right: 0.5rem;">
                 <b class="buy_ddd"  style="font-size: 0.6rem;">-</b>
-                <input type="number" id="buy_number" value="1">
+                <input type="number" id="buy_number" value="1" oninput="changeNum()">
                 <b class=" buy_add"  style="font-size: 0.45rem;">+</b>
             </div>
         </div>
@@ -124,6 +124,13 @@
             money_change();
         });
     });
+
+    function changeNum(){
+        var strong = $('#buy_number').val();
+        $('#buy_number').val(strong);
+        $('#product_num').val(strong);
+        money_change();
+    }
 
     // 金额变更
     function money_change() {

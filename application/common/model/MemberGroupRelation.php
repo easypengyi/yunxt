@@ -17,10 +17,11 @@ class MemberGroupRelation extends BaseModel
     const first = 5;//联合合伙人
     const second = 4;//全球合伙人
     const three = 3;  //董事
-    const four = 2;  //增长官
-    const five = 1;  //创客
+    const four = 2;  //代理
+    const five = 1;  //尊享VIP
     const seven = 7;  //游客
 
+    const one_price = 1866;
     const two_price = 1580;  //增长官
     const three_price = 1380; //董事
     const four_price = 1180;  //全球合伙人

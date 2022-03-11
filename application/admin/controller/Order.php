@@ -721,9 +721,17 @@ class Order extends AdminController
                 $current_price = MemberModel::FOUR_PRICE;
                 $member_rate = MemberModel::FOUR_RATE;
                 break;
+            case MemberGroupRelation::five:
+                $current_price = MemberModel::FIVE_PRICE;
+                $member_rate = MemberModel::FIVE_RATE;
+                break;
+            case MemberGroupRelation::seven:
+                $current_price = MemberModel::SERVER_PRICE;
+                $member_rate = MemberModel::SEVEN_RATE;
+                break;
             default:
-                $current_price = MemberModel::FOUR_PRICE;
-                $member_rate = MemberModel::FOUR_RATE;
+                $current_price = MemberModel::SERVER_PRICE;
+                $member_rate = MemberModel::SEVEN_RATE;
                 break;
         }
 
@@ -744,13 +752,6 @@ class Order extends AdminController
             //平台结算
             self::commonAward($order, $money, $by_member_id); //全国加权分红和运营中心奖励
             $amount = $order['product_num'] * $member_price;
-            //推荐同级或者上级
-            if($member_group_id >= $top_group_id){
-                //推荐奖励
-                $commission =  StrHelper::ceil_decimal($amount * $member_rate / 100, 2);
-                Member::commission_inc($order['top_id'], $commission);
-                MemberCommission::insert_log($order['top_id'], MemberCommission::recommend, $commission, $commission, '来自'.$order['nick_name'].'的推荐奖￥'.$commission, $order['order_id'], $by_member_id);
-            }
 
             //极差分红 当前报单人员的
             $member_path = $member_group[0];
@@ -759,27 +760,50 @@ class Order extends AdminController
                 $path = explode(',', $member_group[0]);
                 $group = explode(',', $member_group[1]);
                 $unit_price = $member_price;
+
+                //有VIP哦
+                if($path[4] > 0 && $group[4] == MemberGroupRelation::five){
+                    self::_setMemberCommission($unit_price, MemberModel::FIVE_PRICE, $order['product_num'], $path[4], '来自'.$order['nick_name'].'的批发奖￥', $order['order_id'], $by_member_id);
+                    $unit_price = MemberModel::FIVE_PRICE;
+                }
+                //有代理哦
+                if($path[3] > 0 && $group[3] == MemberGroupRelation::four){
+                    self::_setMemberCommission($unit_price, MemberModel::FOUR_PRICE, $order['product_num'], $path[3], '来自'.$order['nick_name'].'的批发奖￥', $order['order_id'], $by_member_id);
+                    $unit_price = MemberModel::FOUR_PRICE;
+                }
                 //有董事哦
                 if($path[2] > 0 && $group[2] == MemberGroupRelation::three){
-                    $commission =  ($unit_price - MemberModel::THREE_PRICE) * $order['product_num'];
-                    Member::commission_inc($path[2], $commission);
-                    MemberCommission::insert_log($path[2], MemberCommission::maker4, $commission, $commission, '来自'.$order['nick_name'].'的批发奖￥'.$commission, $order['order_id'], $by_member_id);
+                    self::_setMemberCommission($unit_price, MemberModel::THREE_PRICE, $order['product_num'], $path[2], '来自'.$order['nick_name'].'的批发奖￥', $order['order_id'], $by_member_id);
                     $unit_price = MemberModel::THREE_PRICE;
                 }
                 //有合伙人哦
                 if($path[1] > 0 && $group[1] == MemberGroupRelation::second){
-                    $commission =  ($unit_price - MemberModel::SECOND_PRICE) * $order['product_num'];
-                    Member::commission_inc($path[1], $commission);
-                    MemberCommission::insert_log($path[1], MemberCommission::maker4, $commission, $commission, '来自'.$order['nick_name'].'的批发奖￥'.$commission, $order['order_id'], $by_member_id);
+                    self::_setMemberCommission($unit_price, MemberModel::SECOND_PRICE, $order['product_num'], $path[1], '来自'.$order['nick_name'].'的批发奖￥', $order['order_id'], $by_member_id);
                     $unit_price = MemberModel::SECOND_PRICE;
                 }
                 //有创始人哦
                 if($path[0] > 0 && $group[0] == MemberGroupRelation::first){
-                    $commission =  ($unit_price - MemberModel::FIRST_PRICE) * $order['product_num'];
-                    Member::commission_inc($path[0], $commission);
-                    MemberCommission::insert_log($path[0], MemberCommission::maker4, $commission, $commission, '来自'.$order['nick_name'].'的批发奖￥'.$commission, $order['order_id'], $by_member_id);
+                    self::_setMemberCommission($unit_price, MemberModel::FIRST_PRICE, $order['product_num'], $path[0], '来自'.$order['nick_name'].'的批发奖￥', $order['order_id'], $by_member_id);
                     //$unit_price = MemberModel::SECOND_PRICE;
                 }
+            }
+
+            //推荐奖励
+            $other_commission = 0;
+            if($top_group_id == MemberGroupRelationModel::five && $member_group_id >= MemberGroupRelation::four){  //VIP推荐
+                $other_commission = $amount * MemberModel::FIVE_RATE / 100;//体验官可得到零售价8%=191元
+            }else if($top_group_id == MemberGroupRelationModel::seven){
+                $other_commission = $amount * MemberModel::SEVEN_RATE / 100;//游客可得到零售价5%=119.4元
+            }else if($member_group_id >= $top_group_id){//推荐同级或者上级
+                //推荐奖励
+                $commission =  StrHelper::ceil_decimal($amount * $member_rate / 100, 2);
+                Member::commission_inc($order['top_id'], $commission);
+                MemberCommission::insert_log($order['top_id'], MemberCommission::recommend, $commission, $commission, '来自'.$order['nick_name'].'的推荐奖￥'.$commission, $order['order_id'], $by_member_id);
+            }
+            if($other_commission > 0 && !in_array($order['top_id'], $path) ){
+                $other_commission = StrHelper::ceil_decimal($other_commission, 2);
+                Member::commission_inc($order['top_id'], $other_commission);
+                MemberCommission::insert_log($order['top_id'], MemberCommission::maker5, $other_commission, $other_commission, '来自'.$order['nick_name'].'的推荐奖￥'.$other_commission, $order['order_id'], $by_member_id);
             }
 
             //育成奖
@@ -795,6 +819,26 @@ class Order extends AdminController
                     MemberCommission::insert_log($parent_info['top_id'], MemberCommission::level, $commission, $commission, '来自'.$order['nick_name'].'的育成奖￥'.$commission, $order['order_id'], $by_member_id);
                 }
             }
+        }
+    }
+
+    /**
+     * 差价
+     *
+     * @param $unit_price
+     * @param $member_price
+     * @param $product_num
+     * @param $member_id
+     * @param $description
+     * @param int $order_id
+     * @param int $by_member_id
+     * @throws \think\Exception
+     */
+    private static function _setMemberCommission($unit_price, $member_price, $product_num, $member_id, $description, $order_id = 0, $by_member_id = 0){
+        $commission =  ($unit_price - $member_price) * $product_num;
+        if($commission > 0){
+            Member::commission_inc($member_id, $commission);
+            MemberCommission::insert_log($member_id, MemberCommission::maker4, $commission, $commission, $description.$commission, $order_id, $by_member_id);
         }
     }
 
@@ -1546,7 +1590,7 @@ class Order extends AdminController
             $top_group = MemberGroupRelation::get(['member_id'=>$top['member_id']]);
             //云库存
             if($is_admin == 1){
-                if ($top_group['group_id'] < $product_id){
+                if ($product_id !=7 &&  $top_group['group_id'] <= $product_id){
                     output_error('级别不足，请选择平台结算方式！');
                 }
                 if($top['balance'] < $product_num){

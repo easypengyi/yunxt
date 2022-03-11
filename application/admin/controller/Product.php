@@ -36,7 +36,7 @@ class Product extends AdminController
     {
 
         $where['del'] = false;
-        $where['product_id'] = ['gt',5];
+        $where['product_id'] = ['gt',7];
         $order = $this->sort_order(ProductModel::getTableFields(), 'sort', 'asc');
 
         $list = ProductModel::page_list($where, $order);

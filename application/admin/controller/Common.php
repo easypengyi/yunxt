@@ -183,8 +183,8 @@ class Common extends AdminController
 
         empty($member_id) OR $where['member_id'] = ['not in', $member_id];
         $where['del'] = false;
-        $group['group_id'] = ['neq', MemberGroupRelationModel::seven];
-        $where[]      = ['exp', MemberGroupRelationModel::where_in_raw($group, 'member_id')];
+//        $group['group_id'] = ['neq', MemberGroupRelationModel::seven];
+//        $where[]      = ['exp', MemberGroupRelationModel::where_in_raw($group, 'member_id')];
         $order = $this->sort_order(MemberModel::getTableFields(), 'member_id', 'asc');
 
         $list = MemberModel::page_list($where, $order);

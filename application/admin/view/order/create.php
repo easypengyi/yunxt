@@ -57,10 +57,12 @@
                     <label class="col-sm-2 control-label no-padding-right" for="group_id"> 选择经销级别 </label>
                     <div class="col-sm-10">
                         <select name="group_id" id="group_id" class="col-xs-10 col-sm-5 selectpicker" title="请选择" required>
+                            <option value="1" >尊享VIP</option>
                             <option value="2" >代理人</option>
                             <option value="3" >执行董事</option>
                             <option value="4" >全球合伙人</option>
                             <option value="5" >联合创始人</option>
+                            <option value="7" >游客</option>
                         </select>
                     </div>
                 </div>

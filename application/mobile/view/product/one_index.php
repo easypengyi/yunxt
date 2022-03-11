@@ -115,7 +115,7 @@
 
 
 
-    var weekdayArr = ["代理人", "执行董事", "全球合伙人", "联合创始人"];
+    var weekdayArr = ["游客", "尊享VIP", "代理人", "执行董事", "全球合伙人", "联合创始人"];
 
     var mobileSelect1 = new MobileSelect({
         trigger: "#trigger",

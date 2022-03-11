@@ -26,15 +26,15 @@ class Member extends BaseModel
     const SECOND_PRICE = 1130; //全球合伙人
     const THREE_PRICE = 1330;  //执行董事
     const FOUR_PRICE = 1580;  //代理人
-    const SEVEN_PRICE = 1800;  //体验官
-    const FIVE_PRICE = 2388;  //游客
+    const FIVE_PRICE = 1866;  //体验官
+    const SERVER_PRICE = 2388;  //游客
 
     const FIRST_RATE = 20;   //推荐奖励
     const SECOND_RATE = 17;   //推荐奖励
     const THREE_RATE = 14;   //推荐奖励
     const FOUR_RATE = 11;   //推荐奖励
-    const SEVEN_RATE = 8;  //推荐奖励
-    const FIVE_RATE = 5;  //推荐奖励
+    const FIVE_RATE = 8;  //推荐奖励
+    const SEVEN_RATE = 5;  //推荐奖励
 
     const LEVEL_RATE = 3; //育成奖3%
 
@@ -1068,6 +1068,14 @@ class Member extends BaseModel
      */
     public static function getMemberPrice($name){
         switch ($name){
+            case '游客':
+                $member_group_id = MemberGroupRelation::seven;
+                $member_price = MemberModel::SERVER_PRICE;
+                break;
+            case '尊享VIP':
+                $member_group_id = MemberGroupRelation::five;
+                $member_price = MemberModel::FIVE_PRICE;
+                break;
             case '代理人':
                 $member_group_id = MemberGroupRelation::four;
                 $member_price = MemberModel::FOUR_PRICE;
@@ -1085,8 +1093,8 @@ class Member extends BaseModel
                 $member_price = MemberModel::FIRST_PRICE;
                 break;
             default:
-                $member_group_id =  MemberGroupRelation::four;
-                $member_price = MemberModel::FOUR_PRICE;
+                $member_group_id = MemberGroupRelation::seven;
+                $member_price = MemberModel::SERVER_PRICE;
                 break;
         }
 
@@ -1115,6 +1123,17 @@ class Member extends BaseModel
         //游客推荐
         if($top_info['group_id'] == 7){
             if ($group_id == 7) {
+                $path[0] = $top_path[0];
+                $group[0] = 5;
+                $path[1] = $top_path[1];
+                $group[1] = $top_path[1] > 0 ? 4: 0;
+                $path[2] = $top_path[2];
+                $group[2] = $top_path[2] > 0 ? 3: 0;
+                $path[3] = $top_path[3];
+                $group[3] = $top_path[3] > 0 ? 2: 0;
+                $path[4] = $top_path[4];
+                $group[4] = $top_path[4] > 0 ? 1: 0;
+            }if ($group_id == 1) {
                 $path[0] = $top_path[0];
                 $group[0] = 5;
                 $path[1] = $top_path[1];
@@ -1161,15 +1180,36 @@ class Member extends BaseModel
                     $group[0] = 5;
                     $path[1] = $top_path[1];
                     $group[1] = 4;
-                    $path[2] = $top_info[2];
+                    $path[2] = $top_path[2];
                     $group[2] = 3;
                     $path[3] = $top_info['member_id'];
                     $group[3] = 2;
+                }else if ($top_info['group_id'] == 1) {
+                    $path[0] = $top_path[0];
+                    $group[0] = 5;
+                    $path[1] = $top_path[1];
+                    $group[1] = 4;
+                    $path[2] = $top_path[2];
+                    $group[2] = 3;
+                    $path[3] = $top_path[3];
+                    $group[3] = 2;
+                    $path[4] = $top_info['member_id'];
+                    $group[4] = 1;
                 }
             }else if($top_info['group_id'] == $group_id){
                 $path = $top_path;
                 $group = $top_group;
             }else{
+                if ($group_id == 1) {
+                    $path[0] = $top_path[0];
+                    $group[0] = 5;
+                    $path[1] = $top_path[1];
+                    $group[1] = $top_path[1] > 0 ? 4: 0;
+                    $path[2] = $top_path[2];
+                    $group[2] = $top_path[2] > 0 ? 3: 0;
+                    $path[3] = $top_path[3];
+                    $group[3] = $top_path[3] > 0 ? 3: 0;
+                }
                 if ($group_id == 2) {
                     $path[0] = $top_path[0];
                     $group[0] = 5;

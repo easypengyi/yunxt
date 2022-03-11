@@ -410,9 +410,12 @@ class Order extends ApiController
         empty($trigger1) AND output_error('请填写结算方式！');
 
         switch ($trigger){
-            case '云系统创客':
-             $product_id = 1;
-             break;
+            case '游客':
+                $product_id = 7;
+                break;
+            case '尊享VIP':
+                $product_id = 1;
+                break;
             case '代理人':
                 $product_id = 2;
                 break;
@@ -433,7 +436,7 @@ class Order extends ApiController
         switch ($trigger1){
             case '云库存结算':
                 $is_admin = 1;
-                if ($group_id <= $product_id){
+                if ($product_id != 10 && $group_id <= $product_id){
                     output_error('级别不足，请选择平台结算方式！');
                 }
                 break;
@@ -658,6 +661,9 @@ class Order extends ApiController
                         break;
                     case MemberGroupRelation::four:
                         $v['current_price'] = MemberGroupRelation::two_price;
+                        break;
+                    case MemberGroupRelation::five:
+                        $v['current_price'] = MemberGroupRelation::one_price;
                         break;
                 }
             }

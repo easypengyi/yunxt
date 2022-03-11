@@ -850,9 +850,9 @@ class OrdersShop extends BaseModel
         if($member_group['group_id'] == MemberGroupRelationModel::seven){
             //游客直推
             if($member_top['group_id'] == MemberGroupRelationModel::seven){
-                $other_commission = $money * $num * 0.05;//游客可得到零售价5%=119.4元
+                $other_commission = $money * $num * Member::SEVEN_RATE/100;//游客可得到零售价5%=119.4元
             }else if($member_top['group_id'] == MemberGroupRelationModel::five){
-                $other_commission = $money * $num * 0.08;//体验官可得到零售价8%=191元
+                $other_commission = $money * $num * Member::FIVE_RATE/100;//体验官可得到零售价8%=191元
             }
             if($other_commission > 0){
                 $other_commission = StrHelper::ceil_decimal($other_commission, 2);
