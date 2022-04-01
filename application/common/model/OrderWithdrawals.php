@@ -167,7 +167,7 @@ class OrderWithdrawals extends BaseModel
      * @throws PDOException
      * @throws ThinkException
      */
-    public function order_finish($transaction_sn,$remark="")
+    public function order_finish($transaction_sn,$remark="", $before_amount = 0, $after_amount = 0)
     {
         $member_id      = $this->getAttr('member_id');
         $account        = $this->getAttr('account');
@@ -188,7 +188,7 @@ class OrderWithdrawals extends BaseModel
         }
 
         // 余额变动记录
-        MemberCommission::withdrawals($member_id, $amount, $account, $withdrawals_id);
+        MemberCommission::withdrawals($member_id, $amount, $account, $withdrawals_id, $before_amount, $after_amount);
         return true;
     }
 

@@ -137,7 +137,7 @@ class Defray extends ApiController
                 if ($top){
     //                        if ($top['group_id'] != MemberGroupRelationModel::seven){
     //                            $this->newReward($group['top_id'],$order['unit_price'],$order['product_num'],$member_name,$group['group_id']);
-                    OrdersShopModel::newReward($group, $top, $order['unit_price'], $order['product_num'],$member_name, $order_id);
+                    OrdersShopModel::newReward($group, $top, $order['unit_price'], $order['product_num'],$member_name, $order_id, $member_id);
     //                        }
                 }
             }

@@ -66,7 +66,7 @@ class Admin extends BaseModel
      * @param $salt
      * @return string
      */
-    private function create_password($password, $salt)
+    public function create_password($password, $salt)
     {
         return md5(md5($password) . md5($salt));
     }

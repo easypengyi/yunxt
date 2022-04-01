@@ -123,11 +123,14 @@ class Receivable extends ApiController
 
         try {
             Db::startTrans();
+            $by_member = MemberModel::get($this->member_id);
             $result = MemberModel::balance_dec($this->member_id, $balance);
-            MemberBalance::insert_log($this->member_id,MemberBalance::give,$balance,'转赠给'.$Member['member_realname'],0);
+            MemberBalance::insert_log($this->member_id,MemberBalance::give,$balance,'转赠给'.$Member['member_realname'],
+                0, '', $by_member['balance'], $by_member['balance'] - $balance);
             $result OR output_error('云库存数量不足');
             MemberModel::balance_inc($Member['member_id'], $balance);
-            MemberBalance::insert_log($Member['member_id'],MemberBalance::collect,$balance,'来自'.$My['member_realname'].'的库存',0);
+            MemberBalance::insert_log($Member['member_id'],MemberBalance::collect,$balance,
+                '来自'.$My['member_realname'].'的库存',0, '', $Member['balance'], $Member['balance'] + $balance);
             Db::commit();
         } catch (Exception $e) {
             Db::rollback();

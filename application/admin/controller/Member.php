@@ -6,6 +6,7 @@ use app\common\model\MemberBalance;
 use app\common\model\MemberCommission;
 use app\common\model\MemberGroupRelation;
 use app\common\model\Reword;
+use app\common\model\Admin as AdminModel;
 use helper\TimeHelper;
 use think\Db;
 use Exception;
@@ -268,10 +269,13 @@ class Member extends AdminController
      * @throws \think\exception\DbException
      */
     public function recharge($id){
+
         $data_info = MemberModel::get($id);
         empty($data_info) AND $this->error('数据已删除！');
         $return_url = $this->return_url();
         if ($this->is_ajax) {
+
+            $admin = AdminModel::get($this->user['admin_id']);
             try {
                 Db::startTrans();
                 $money = input('recharge_money', '');
@@ -279,12 +283,13 @@ class Member extends AdminController
                 $pwd = input('recharge_pwd', '');
                 empty($pwd) AND $this->error('请输入密码！');
                 $remark = input('remark', '');
-
-                if ($pwd != 'sky61361545'){
+                $model = new AdminModel();
+                if ($model->create_password($pwd, $admin['admin_pwd_salt']) != $admin['admin_pwd']){
                     $this->error('密码不正确！');
                 }else{
                     MemberModel::balance_inc($id, $money);
-                    MemberBalance::insert_log($id,MemberBalance::recharge,$money,'库存充值',$this->user['admin_id'], $remark);
+                    MemberBalance::insert_log($id,MemberBalance::recharge,$money,'库存充值',
+                        $this->user['admin_id'], $remark, $data_info['balance'], $data_info['balance'] + $money);
                 }
                 Db::commit();
             } catch (Exception $e) {
@@ -313,6 +318,7 @@ class Member extends AdminController
         empty($data_info) AND $this->error('数据已删除！');
         $return_url = $this->return_url();
         if ($this->is_ajax) {
+            $admin = AdminModel::get($this->user['admin_id']);
             try {
                 Db::startTrans();
                 $money = input('recharge_money', '');
@@ -320,8 +326,8 @@ class Member extends AdminController
                 $pwd = input('recharge_pwd', '');
                 empty($pwd) AND $this->error('请输入密码！');
                 $remark = input('remark', '');
-
-                if ($pwd != 'sky61361545'){
+                $model = new AdminModel();
+                if ($model->create_password($pwd, $admin['admin_pwd_salt']) != $admin['admin_pwd']){
                     $this->error('密码不正确！');
                 }else{
                    $res =  MemberModel::balance_dec($id, $money);
@@ -333,7 +339,8 @@ class Member extends AdminController
             }
             $this->cache_clear();
             if ($res){
-                MemberBalance::insert_log($id,MemberBalance::reduce,$money,'库存缩减',$this->user['admin_id'], $remark);
+                MemberBalance::insert_log($id,MemberBalance::reduce,$money,'库存缩减',$this->user['admin_id'], $remark,
+                    $data_info['balance'], $data_info['balance'] - $money);
                 $this->success('缩减成功！', input('return_url', $return_url));
             }else{
                 $this->success('缩减失败！', input('return_url', $return_url));
@@ -745,7 +752,9 @@ class Member extends AdminController
             empty($pwd) AND $this->error('请输入密码！');
             $remark = input('remark', '');
 
-            if ($pwd != 'sky61361545'){
+            $admin = AdminModel::get($this->user['admin_id']);
+            $model = new AdminModel();
+            if ($model->create_password($pwd, $admin['admin_pwd_salt']) != $admin['admin_pwd']){
                 $this->error('密码不正确！');
             }
 
@@ -761,9 +770,13 @@ class Member extends AdminController
                 if($type == 1){
                     MemberModel::commission_inc($member_id, $money);
                     $ctype = MemberCommission::sysRecharge;
+                    $data_log[1]['before_value']   = $data_info['commission'];
+                    $data_log[1]['after_value']   = $data_info['commission'] + $money;
                 }else{
                     MemberModel::commission_dec($member_id, $money);
                     $ctype = MemberCommission::sysReduce;
+                    $data_log[1]['before_value']   = $data_info['commission'];
+                    $data_log[1]['after_value']   = $data_info['commission'] - $money;
                 }
 
                 $data_log[1]['member_id']   = $member_id;

@@ -135,8 +135,8 @@ class OrderWithdrawals extends AdminController
                 //更新
                 $data_info->save(['money'=>$money,'service_money'=> $service_amount, 'amount'=> $money + $service_amount]);
             }
-
-            $result = $data_info->order_finish($data_info['order_sn'], $remark);
+            $member = MemberModel::get($data_info['member_id']);
+            $result = $data_info->order_finish($data_info['order_sn'], $remark, $member['commission'] + $data_info['amount'], $member['commission']);
             $result OR $this->error('操作失败！');
             //提现到余额
             if($data_info['type'] == OrderWithdrawalsModel::TYPE_BALANCE ){
@@ -175,8 +175,16 @@ class OrderWithdrawals extends AdminController
         empty($data_info) AND $this->error('数据不存在！');
 
 //        $remark = input('remark', "");
+        try {
+            Db::startTrans();
+            $result = $data_info->save(['status'=>OrderWithdrawalsModel::STATUS_INVALID]); //直接驳回
+            MemberModel::commission_inc($data_info['member_id'], $data_info['amount']); //余额加上
+            Db::commit();
+        } catch (Exception $e) {
+            Db::rollback();
+            $this->error($e->getMessage());
+        }
 
-        $result = $data_info->save(['status'=>OrderWithdrawalsModel::STATUS_INVALID]); //直接驳回
         $result OR $this->error('操作失败！');
         MessageModel::commission_message_readed($id);
         // $this->success('操作完成！', $this->http_referer ?: $this->return_url());

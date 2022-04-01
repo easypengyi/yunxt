@@ -797,13 +797,15 @@ class Order extends AdminController
             }else if($member_group_id >= $top_group_id){//推荐同级或者上级
                 //推荐奖励
                 $commission =  StrHelper::ceil_decimal($amount * $member_rate / 100, 2);
+                $top_member = MemberModel::get($order['top_id']);
                 Member::commission_inc($order['top_id'], $commission);
-                MemberCommission::insert_log($order['top_id'], MemberCommission::recommend, $commission, $commission, '来自'.$order['nick_name'].'的推荐奖￥'.$commission, $order['order_id'], $by_member_id);
+                MemberCommission::insert_log($order['top_id'], MemberCommission::recommend, $commission, $commission, '来自'.$order['nick_name'].'的推荐奖￥'.$commission, $order['order_id'], $by_member_id, $top_member['commission'], $top_member['commission'] + $commission);
             }
             if($other_commission > 0 && !in_array($order['top_id'], $path) ){
                 $other_commission = StrHelper::ceil_decimal($other_commission, 2);
+                $top_member = MemberModel::get($order['top_id']);
                 Member::commission_inc($order['top_id'], $other_commission);
-                MemberCommission::insert_log($order['top_id'], MemberCommission::maker5, $other_commission, $other_commission, '来自'.$order['nick_name'].'的推荐奖￥'.$other_commission, $order['order_id'], $by_member_id);
+                MemberCommission::insert_log($order['top_id'], MemberCommission::maker5, $other_commission, $other_commission, '来自'.$order['nick_name'].'的推荐奖￥'.$other_commission, $order['order_id'], $by_member_id, $top_member['commission'], $top_member['commission'] + $other_commission);
             }
 
             //育成奖
@@ -811,12 +813,15 @@ class Order extends AdminController
             if(!is_null($parent_info)){
                 //推荐人与第一间推人是平级的，或第一间推人比推荐人低级的，都会有3%育成奖
                 // 现在是：新代理-董事-代理，第二个代理是有3%,现在增加：新代理-董事-董事，第二个董事也有3%。
-                $parent_group_id = MemberGroupRelationModel::get_group_id($parent_info['top_id']);
-                $diff_group = $parent_info['group_id'] - $parent_group_id;
-                if(($parent_group_id == MemberGroupRelationModel::seven || $diff_group>= 0) && !in_array($parent_info['top_id'], $path) && $parent_info['top_id']>0){
-                    $commission =  StrHelper::ceil_decimal($amount * MemberModel::LEVEL_RATE / 100, 2);
-                    Member::commission_inc($parent_info['top_id'], $commission);
-                    MemberCommission::insert_log($parent_info['top_id'], MemberCommission::level, $commission, $commission, '来自'.$order['nick_name'].'的育成奖￥'.$commission, $order['order_id'], $by_member_id);
+                if(intval($parent_info['top_id']) > 0){
+                    $parent_group_id = MemberGroupRelationModel::get_group_id($parent_info['top_id']);
+                    $diff_group = $parent_info['group_id'] - $parent_group_id;
+                    if(($parent_group_id == MemberGroupRelationModel::seven || $diff_group>= 0) && !in_array($parent_info['top_id'], $path) && $parent_info['top_id']>0){
+                        $commission =  StrHelper::ceil_decimal($amount * MemberModel::LEVEL_RATE / 100, 2);
+                        $parent_member = MemberModel::get($parent_info['top_id']);
+                        Member::commission_inc($parent_info['top_id'], $commission);
+                        MemberCommission::insert_log($parent_info['top_id'], MemberCommission::level, $commission, $commission, '来自'.$order['nick_name'].'的育成奖￥'.$commission, $order['order_id'], $by_member_id, $parent_member['commission'], $parent_member['commission'] + $commission);
+                    }
                 }
             }
         }
@@ -837,8 +842,9 @@ class Order extends AdminController
     private static function _setMemberCommission($unit_price, $member_price, $product_num, $member_id, $description, $order_id = 0, $by_member_id = 0){
         $commission =  ($unit_price - $member_price) * $product_num;
         if($commission > 0){
+            $member = Member::get($member_id);
             Member::commission_inc($member_id, $commission);
-            MemberCommission::insert_log($member_id, MemberCommission::maker4, $commission, $commission, $description.$commission, $order_id, $by_member_id);
+            MemberCommission::insert_log($member_id, MemberCommission::maker4, $commission, $commission, $description.$commission, $order_id, $by_member_id, $member['commission'], $member['commission']+$commission);
         }
     }
 
@@ -868,6 +874,24 @@ class Order extends AdminController
 //            $data_log[0]['by_member_id'] = $by_member_id;
 //            $data_log[0]['create_time'] = time();
 //        }
+        $rewards = Reword::all()->toArray();
+        foreach($rewards as $item){
+            if($item['configure_name'] == 'first_commission'){
+                $data_log[1]['before_value'] = $item['configure_value'];
+                $data_log[1]['after_value'] = $item['configure_value'] + $reward1;
+                continue;
+            }
+            if($item['configure_name'] == 'second_commission'){
+                $data_log[2]['before_value'] = $item['configure_value'];
+                $data_log[2]['after_value'] = $item['configure_value'] + $reward2;
+                continue;
+            }
+            if($item['configure_name'] == 'three_commission'){
+                $data_log[3]['before_value'] = $item['configure_value'];
+                $data_log[3]['after_value'] = $item['configure_value'] + $reward3;
+                continue;
+            }
+        }
         Reword::commission_inc('first_commission', $reward1);
         $data_log[1]['member_id']   = 0;
         $data_log[1]['type']        = MemberCommission::first;
@@ -1625,7 +1649,8 @@ class Order extends AdminController
 
                 if ($is_admin == 1) {
                     $result = MemberModel::balance_dec($top['member_id'], $product_num);
-                    MemberBalance::insert_log($top['member_id'], MemberBalance::SHOP, $product_num, '来自' . $member['member_realname'] . '的云库存报单', 0);
+                    MemberBalance::insert_log($top['member_id'], MemberBalance::SHOP,
+                        $product_num, '来自' . $member['member_realname'] . '的云库存报单', 0, '', $member['balance'], $member['balance'] - $product_num);
                 }
 
                 $data   = [

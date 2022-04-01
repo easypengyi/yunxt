@@ -11,6 +11,7 @@ use Exception;
 use think\Cache;
 use think\Config;
 use think\Log;
+use think\Session;
 use tool\SensitiveTool;
 use thinksdk\ThinkOauth;
 use app\common\Constant;
@@ -63,6 +64,7 @@ class Member extends ApiController
         } else {
             $invitation_id = MemberModel::find_invitation_id($invitation);
             (empty($invitation_id) AND Config::get('custom.invitation_code_check')) AND output_error('邀请码不存在！');
+            Session::set('invitation_id', $invitation);
         }
 
         empty($nickname) AND $nickname = '会员' . time();

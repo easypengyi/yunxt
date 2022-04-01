@@ -40,6 +40,8 @@
                         <thead>
                         <tr>
                             <th>金额</th>
+                            <th>操作前金额</th>
+                            <th>操作后金额</th>
                             <th>描述</th>
                             <th>操作时间</th>
                         </tr>
@@ -53,6 +55,8 @@
                                 <?php else: ?>
                                 <td>-{$v.value}</td>
                                 <?php endif; ?>
+                                <td>{$v.before_value}</td>
+                                <td>{$v.after_value}</td>
                                 <td>{$v.description}</td>
                                <td>{:date('Y-m-d H:i:s',$v.create_time)}</td>
                             </tr>

@@ -2,6 +2,7 @@
 
 namespace app\admin\controller;
 
+use app\common\model\Admin as AdminModel;
 use app\common\model\MemberCommission;
 use app\common\model\OrderShop as OrderShopModel;
 use app\common\model\Reword;
@@ -232,7 +233,9 @@ class Product extends AdminController
             empty($pwd) AND $this->error('请输入密码！');
             $remark = input('remark', '');
 
-            if ($pwd != 'sky61361545'){
+            $admin = AdminModel::get($this->user['admin_id']);
+            $model = new AdminModel();
+            if ($model->create_password($pwd, $admin['admin_pwd_salt']) != $admin['admin_pwd']){
                 $this->error('密码不正确！');
             }
 
@@ -249,6 +252,7 @@ class Product extends AdminController
                     break;
 
             }
+            $info = Reword::get(['configure_name'=>$name]);
 
             try {
                 Db::startTrans();
@@ -263,6 +267,8 @@ class Product extends AdminController
                 $data_log[1]['mode'] = 0;
                 $data_log[1]['relation_id'] = 0;
                 $data_log[1]['create_time'] = time();
+                $data_log[1]['before_value'] = $info['configure_value'];
+                $data_log[1]['after_value'] = $info['configure_value'] + $money;
                 MemberCommission::insert_log_all($data_log);
 
                 Db::commit();
@@ -299,7 +305,9 @@ class Product extends AdminController
             empty($pwd) AND $this->error('请输入密码！');
             $remark = input('remark', '');
 
-            if ($pwd != 'sky61361545'){
+            $admin = AdminModel::get($this->user['admin_id']);
+            $model = new AdminModel();
+            if ($model->create_password($pwd, $admin['admin_pwd_salt']) != $admin['admin_pwd']){
                 $this->error('密码不正确！');
             }
 
@@ -316,7 +324,7 @@ class Product extends AdminController
                     break;
 
             }
-
+            $info = Reword::get(['configure_name'=>$name]);
             try {
                 Db::startTrans();
 
@@ -330,6 +338,8 @@ class Product extends AdminController
                 $data_log[1]['mode'] = 1;
                 $data_log[1]['relation_id'] = 0;
                 $data_log[1]['create_time'] = time();
+                $data_log[1]['before_value'] = $info['configure_value'];
+                $data_log[1]['after_value'] = $info['configure_value'] - $money;
                 MemberCommission::insert_log_all($data_log);
 
                 Db::commit();

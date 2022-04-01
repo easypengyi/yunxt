@@ -268,7 +268,7 @@ class User extends MobileController
             $img_url = $member['member_headpic']['full_url'];
         }
         $this->assign('img', $img_url);
-        $share_code = url('Login/register', ['invitation_id'=>Member::create_invitation($this->member['member_id'])], true, true);
+        $share_code = url('Login/register', ['invitation'=>Member::create_invitation($this->member['member_id'])], true, true);
         $this->assign('share_code', $share_code);
         $this->assign('title', '推广二维码');
         $this->assign('return_url', controller_url('index'));

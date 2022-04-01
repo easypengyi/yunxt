@@ -210,8 +210,11 @@ class Order extends ApiController
 
                 //云库存取消，需要返回
                 if($data_info->getAttr('order_type') == 2){
+                    $member = Member::get($data_info->getAttr('member_id'));
+                    $num = $member['balance'] + $data_info->getAttr('product_num');
                     MemberModel::balance_inc($data_info->getAttr('member_id'), $data_info->getAttr('product_num')); //库存
-                    MemberBalance::insert_log($data_info->getAttr('member_id'),MemberBalance::SHOP_CANCEL, $data_info->getAttr('product_num'),'取消库存发货', 0);
+                    MemberBalance::insert_log($data_info->getAttr('member_id'),MemberBalance::SHOP_CANCEL,
+                        $data_info->getAttr('product_num'),'取消库存发货', 0, '', $member['balance'], $num);
                 }
             }
             $data_info->order_cancel();
@@ -593,8 +596,10 @@ class Order extends ApiController
                     $message = '产品数量错误';
                     output_error($message);
                 }
+                $member = Member::get($this->member_id);
                 $result = MemberModel::balance_dec($this->member_id, $product_num);
-                MemberBalance::insert_log($this->member_id,MemberBalance::SHOP,$product_num,'来自'.$nick_name.'的云库存报单',0);
+                MemberBalance::insert_log($this->member_id,MemberBalance::SHOP,$product_num,
+                    '来自'.$nick_name.'的云库存报单',0, '', $member['balance'], $member['balance'] - $product_num);
                 if (!$result) {
                     $message = '云库存不足！';
                     output_error($message);
@@ -860,6 +865,7 @@ class Order extends ApiController
             $product_list = [];
             $total_money  = 0;
             Db::startTrans();
+            $member = Member::get($this->member_id);
             $result = MemberModel::balance_dec($this->member_id, $product_num);
 
             if (!$result) {
@@ -867,7 +873,8 @@ class Order extends ApiController
                 $message = '云库存不足！';
                 output_error($message);
             }
-            $log = MemberBalance::insert_log($this->member_id,MemberBalance::SHOP,$product_num,'来自'.$address['consignee'].'的库存发货',0);
+            $log = MemberBalance::insert_log($this->member_id,MemberBalance::SHOP,$product_num,
+                '来自'.$address['consignee'].'的库存发货',0,'', $member['balance'], $member['balance'] - $product_num);
 
             foreach ($info['order'] as $k => $v) {
                 $v['product_image_id'] = $v['product_image']['file_id'];

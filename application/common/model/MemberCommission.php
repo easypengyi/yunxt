@@ -229,9 +229,9 @@ class MemberCommission extends BaseModel
      * @param $relation_id
      * @return static
      */
-    public static function withdrawals($member_id, $value, $account, $relation_id)
+    public static function withdrawals($member_id, $value, $account, $relation_id, $before_amount, $after_amount)
     {
-        return self::insert_log($member_id, self::WITHDRAWALS, $value, $value, '提现至' . $account, $relation_id);
+        return self::insert_log($member_id, self::WITHDRAWALS, $value, $value, '提现至' . $account, $relation_id, 0, $before_amount, $after_amount);
     }
 
     /**
@@ -245,7 +245,7 @@ class MemberCommission extends BaseModel
      * @param bool   $profit
      * @return static
      */
-    public static function insert_log($member_id, $type, $amount, $value, $description = '', $relation_id = 0, $by_member_id = 0) {
+    public static function insert_log($member_id, $type, $amount, $value, $description = '', $relation_id = 0, $by_member_id = 0, $before_value = 0, $after_value = 0) {
         $data['description'] = $description;
         $data['member_id']   = $member_id;
         $data['type']        = $type;
@@ -253,6 +253,8 @@ class MemberCommission extends BaseModel
         $data['value']       = $value;
         $data['relation_id'] = $relation_id;
         $data['by_member_id'] = $by_member_id;
+        $data['before_value'] = $before_value;
+        $data['after_value'] = $after_value;
         return self::create($data);
     }
 

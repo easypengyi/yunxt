@@ -41,6 +41,8 @@
                         <thead>
                         <tr>
                             <th>库存值</th>
+                            <th>操作前库存值</th>
+                            <th>操作后库存值</th>
                             <th>描述</th>
                             <th>备注</th>
                             <th>操作人</th>
@@ -56,6 +58,8 @@
                                 <?php else: ?>
                                 <td>-{$v.value}</td>
                                 <?php endif; ?>
+                                <td>{$v.before_value}</td>
+                                <td>{$v.after_value}</td>
                                 <td>{$v.description}</td>
                                 <td>{$v.remark}</td>
                                 <td>{$v.admin.admin_username}</td>

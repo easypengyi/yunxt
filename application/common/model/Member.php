@@ -128,7 +128,8 @@ class Member extends BaseModel
 
         $model->interface_handle();
 
-        return $model;
+        $info = self::member_info($model->getAttr('member_id'));
+        return $info;
     }
 
     /**
@@ -1118,8 +1119,13 @@ class Member extends BaseModel
         }
         //对应关系
         $top_info = MemberGroupRelation::get_top($top_id);
-        $top_path = explode(',', $top_info['path']);
-        $top_group = explode(',', $top_info['path_group']);
+        if(empty($top_info['path'])){
+            $top_path = [0,0,0,0,0,0];
+            $top_group = [0,0,0,0,0,0];
+        }else{
+            $top_path = explode(',', $top_info['path']);
+            $top_group = explode(',', $top_info['path_group']);
+        }
         //游客推荐
         if($top_info['group_id'] == 7){
             if ($group_id == 7) {

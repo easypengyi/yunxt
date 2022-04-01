@@ -47,6 +47,8 @@
                         <thead>
                         <tr>
                             <th>金额</th>
+                            <th>操作前金额</th>
+                            <th>操作后金额</th>
                             <th>用户名</th>
                             <th>描述</th>
                             <th>时间</th>
@@ -61,6 +63,8 @@
                                 <?php else: ?>
                                     <td>+{$v.value}</td>
                                 <?php endif; ?>
+                                <td>{$v.before_value}</td>
+                                <td>{$v.after_value}</td>
                                 <td>
                                     <?php if ($v['by_member_id'] > 0): ?>
                                         {$v['by_member']['member_realname']}

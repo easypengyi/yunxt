@@ -63,7 +63,15 @@ class Order1 extends AdminController
         $list = OrdersShopModel::page_list($where, $order);
         if (!$list->isEmpty()) {
             $list->load(['Member']);
+            $list->load(['Product']);
         }
+        $list->each(function($item){
+            $unit_product_num = 1;
+            if(!empty($item['product'])){
+                $unit_product_num = $item['product']['unit_product_num'];
+            }
+            $item['product_num'] = $item['product_num'] * $unit_product_num;
+        });
 
         $this->assign('total_money', OrdersShopModel::where($where)->sum('amount'));
         $this->assign($list->toArray());
@@ -90,7 +98,15 @@ class Order1 extends AdminController
         $list = OrdersShopModel::page_list($where, $order);
         if (!$list->isEmpty()) {
             $list->load(['Member']);
+            $list->load(['Product']);
         }
+        $list->each(function($item){
+            $unit_product_num = 1;
+            if(!empty($item['product'])){
+                $unit_product_num = $item['product']['unit_product_num'];
+            }
+            $item['product_num'] = $item['product_num'] * $unit_product_num;
+        });
 
         $this->assign($list->toArray());
         return $this->fetch_view();
@@ -170,8 +186,10 @@ class Order1 extends AdminController
                 $data_info->save($data);
                 //云库存取消，需要返回
                 if($data_info->getAttr('order_type') == 2){
+                    $member = Member::get($data_info->getAttr('member_id'));
                     Member::balance_inc($data_info->getAttr('member_id'), $data_info->getAttr('product_num')); //库存
-                    MemberBalanceModel::insert_log($data_info->getAttr('member_id'),MemberBalanceModel::SHOP_CANCEL, $data_info->getAttr('product_num'),'取消库存发货', 0);
+                    MemberBalanceModel::insert_log($data_info->getAttr('member_id'),MemberBalanceModel::SHOP_CANCEL,
+                        $data_info->getAttr('product_num'),'取消库存发货', 0, $member['balance'], $member['balance'] + $data_info->getAttr('product_num'));
                 }
                 Db::commit();
             }
@@ -222,7 +240,15 @@ class Order1 extends AdminController
         $list = OrdersShopModel::page_list($where, $order);
         if (!$list->isEmpty()) {
             $list->load(['Member', 'Distribution']);
+            $list->load(['Product']);
         }
+        $list->each(function($item){
+            $unit_product_num = 1;
+            if(!empty($item['product'])){
+                $unit_product_num = $item['product']['unit_product_num'];
+            }
+            $item['product_num'] = $item['product_num'] * $unit_product_num;
+        });
 
         $this->assign($list->toArray());
         return $this->fetch_view();
@@ -247,7 +273,15 @@ class Order1 extends AdminController
         $list = OrdersShopModel::page_list($where, $order);
         if (!$list->isEmpty()) {
             $list->load(['Member', 'Distribution']);
+            $list->load(['Product']);
         }
+        $list->each(function($item){
+            $unit_product_num = 1;
+            if(!empty($item['product'])){
+                $unit_product_num = $item['product']['unit_product_num'];
+            }
+            $item['product_num'] = $item['product_num'] * $unit_product_num;
+        });
 
         $this->assign($list->toArray());
         return $this->fetch_view();
@@ -302,7 +336,15 @@ class Order1 extends AdminController
         $list = OrdersShopModel::page_list($where, $order);
         if (!$list->isEmpty()) {
             $list->load(['Member']);
+            $list->load(['Product']);
         }
+        $list->each(function($item){
+            $unit_product_num = 1;
+            if(!empty($item['product'])){
+                $unit_product_num = $item['product']['unit_product_num'];
+            }
+            $item['product_num'] = $item['product_num'] * $unit_product_num;
+        });
 
         $this->assign($list->toArray());
         return $this->fetch_view();
@@ -325,9 +367,18 @@ class Order1 extends AdminController
         $this->export($where, $order);
 
         $list = OrdersShopModel::page_list($where, $order);
+
         if (!$list->isEmpty()) {
             $list->load(['Member', 'Distribution']);
+            $list->load(['Product']);
         }
+        $list->each(function($item){
+            $unit_product_num = 1;
+            if(!empty($item['product'])){
+                $unit_product_num = $item['product']['unit_product_num'];
+            }
+            $item['product_num'] = $item['product_num'] * $unit_product_num;
+        });
 
         $this->assign($list->toArray());
         return $this->fetch_view();
@@ -352,7 +403,15 @@ class Order1 extends AdminController
         $list = OrdersShopModel::page_list($where, $order);
         if (!$list->isEmpty()) {
             $list->load(['Member']);
+            $list->load(['Product']);
         }
+        $list->each(function($item){
+            $unit_product_num = 1;
+            if(!empty($item['product'])){
+                $unit_product_num = $item['product']['unit_product_num'];
+            }
+            $item['product_num'] = $item['product_num'] * $unit_product_num;
+        });
 
         $this->assign($list->toArray());
         return $this->fetch_view();
@@ -377,7 +436,16 @@ class Order1 extends AdminController
         $list = OrdersShopModel::page_list($where, $order);
         if (!$list->isEmpty()) {
             $list->load(['Member']);
+            $list->load(['Product']);
         }
+
+        $list->each(function($item){
+            $unit_product_num = 1;
+            if(!empty($item['product'])){
+                $unit_product_num = $item['product']['unit_product_num'];
+            }
+            $item['product_num'] = $item['product_num'] * $unit_product_num;
+        });
 
         $this->assign($list->toArray());
         return $this->fetch_view();
